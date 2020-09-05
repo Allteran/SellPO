@@ -12,6 +12,7 @@
         <title>SellPO</title>
     </head>
     <body>
+    <#include "navbar.ftlh">
     <h1>Hello, SellPO! You're gonna be the best seller's helper ever</h1>
     <div></div>
     <#nested>

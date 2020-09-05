@@ -1,22 +1,13 @@
-package ru.allteran.sellpo.controller;
+package ru.allteran.sellpo.testutils;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import ru.allteran.sellpo.domain.Dealer;
 import ru.allteran.sellpo.domain.Employee;
 import ru.allteran.sellpo.domain.EmployeeKPI;
-import ru.allteran.sellpo.testutils.EmployeeKPITest;
 
-@Controller
-public class MainController {
+public class EmployeeKPITest {
+    private Employee employee;
 
-    @GetMapping("/")
-    public String main(Employee employee, Model model) {
-        /**
-         * The next part of code is super ugly, cuz I hardcoded all of output data
-         * But dont worry, it's only for initial test, in next commit i'll cut it
-         */
+    private EmployeeKPI initEmplKPI() {
         EmployeeKPI kpi = new EmployeeKPI();
         kpi.setGiPlan(55);
         kpi.setMnpPlan(5);
@@ -48,7 +39,17 @@ public class MainController {
         kpi.setServiceFact(5190);
         kpi.setPhoneFact(81570);
         kpi.setAccessoryFact(62547);
-        model.addAttribute("kpi", kpi);
-        return "main";
+
+        return kpi;
+    }
+
+    public Employee initEmployee(long phone, String firstName, String secondName) {
+
+        employee.setKpi(initEmplKPI());
+
+        employee.setPhone(phone);
+        employee.setFirstName(firstName);
+        employee.setLastName(secondName);
+        return employee;
     }
 }
