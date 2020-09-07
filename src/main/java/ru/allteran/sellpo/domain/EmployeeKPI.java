@@ -1,5 +1,7 @@
 package ru.allteran.sellpo.domain;
 
+import java.util.List;
+
 public class EmployeeKPI {
     private int giPlan;
     private int mnpPlan;
