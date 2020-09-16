@@ -1,8 +1,13 @@
 package ru.allteran.sellpo.domain;
 
-import java.util.List;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
 public class Sale {
+    @Id
+    private String id;
+
     private String date;
     private int posId;
     private double employeeId;
@@ -10,6 +15,23 @@ public class Sale {
     private PayType payType;
 
     public Sale() {
+    }
+
+    public Sale(String id, String date, int posId, double employeeId, Product product, PayType payType) {
+        this.id = id;
+        this.date = date;
+        this.posId = posId;
+        this.employeeId = employeeId;
+        this.product = product;
+        this.payType = payType;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDate() {
