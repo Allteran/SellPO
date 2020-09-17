@@ -2,7 +2,6 @@ package ru.allteran.sellpo.service;
 
 import org.springframework.stereotype.Service;
 import ru.allteran.sellpo.domain.ProductType;
-import ru.allteran.sellpo.domain.ProductTypeCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +25,4 @@ public class UtilService {
     public static final String ROSTELECOM_NAME = "Ростелеком";
     public static final String YADD_NAME="Я.Адаптер";
 
-    public List<String> typesToString (List<ProductType> typeList) {
-        List<String> typesString = new ArrayList<>();
-        for (ProductType type : typeList) {
-            typesString.add(type.getName());
-        }
-        return typesString;
-    }
 }

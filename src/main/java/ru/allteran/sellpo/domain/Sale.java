@@ -12,12 +12,12 @@ public class Sale {
     private int posId;
     private double employeeId;
     private Product product;
-    private PayType payType;
+    private int payType;
 
     public Sale() {
     }
 
-    public Sale(String id, String date, int posId, double employeeId, Product product, PayType payType) {
+    public Sale(String id, String date, int posId, double employeeId, Product product, int payType) {
         this.id = id;
         this.date = date;
         this.posId = posId;
@@ -66,11 +66,11 @@ public class Sale {
         this.product = product;
     }
 
-    public PayType getPayType() {
+    public int getPayType() {
         return payType;
     }
 
-    public void setPayType(PayType payType) {
+    public void setPayType(int payType) {
         this.payType = payType;
     }
 }

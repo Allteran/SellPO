@@ -6,9 +6,9 @@ import ru.allteran.sellpo.domain.ProductType;
 import ru.allteran.sellpo.domain.Sale;
 
 import java.util.List;
-
 @Repository
 public interface SaleRepository extends MongoRepository<Sale, String> {
-    public List<Sale> findAll(String id);
+    public List<Sale> findAll();
     public List<Sale> findByProductType(ProductType type);
+    public List<Sale> findByDate(String date);
 }

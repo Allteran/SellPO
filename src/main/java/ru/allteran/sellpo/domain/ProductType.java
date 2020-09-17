@@ -8,15 +8,13 @@ public class ProductType {
     @Id
     private String id;
     private String name;
-    private ProductTypeCode typeCode;
 
     public ProductType() {
     }
 
-    public ProductType(String id, String name, ProductTypeCode typeCode) {
+    public ProductType(String id, String name) {
         this.id = id;
         this.name = name;
-        this.typeCode = typeCode;
     }
 
     public String getId() {
@@ -35,11 +33,4 @@ public class ProductType {
         this.name = name;
     }
 
-    public ProductTypeCode getTypeCode() {
-        return typeCode;
-    }
-
-    public void setTypeCode(ProductTypeCode typeCode) {
-        this.typeCode = typeCode;
-    }
 }
