@@ -1,25 +1,25 @@
 <#import "parts/common.ftlh" as common>
 <@common.page>
-    <div>
+    <div class="form-group">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <select class="custom-select mx-2 my-2" id="inputGroupSelect01">
                     <option selected>Выберте тип товара</option>
-                    <option value="1">Мой разговор</option>
-                    <option value="2">Мой онлайн</option>
-                    <option value="3">Мой онлайн+</option>
-                    <option value="4">Премиум</option>
-                    <option value="5">Другие сим</option>
-                    <option value="6">Аксессуар</option>
-                    <option value="7">Кнопочный телефон</option>
-                    <option value="8">Смартфон</option>
-                    <option value="9">Услуги</option>
-                    <option value="10">Страхование</option>
-                    <option value="11">ESET</option>
-                    <option value="12">Подписки</option>
-                    <option value="13">WINK</option>
-                    <option value="14">Ростелеком</option>
-                    <option value="15">Я.Адаптер</option>
+                    <option value="1" id="mr">Мой разговор</option>
+                    <option value="2" id="mo">Мой онлайн</option>
+                    <option value="3" id="mop">Мой онлайн+</option>
+                    <option value="4" id="premium">Премиум</option>
+                    <option value="5" id="otherGi">Другие сим</option>
+                    <option value="6" id="accessory">Аксессуар</option>
+                    <option value="7" id="cellphone">Кнопочный телефон</option>
+                    <option value="8" id="smartphone">Смартфон</option>
+                    <option value="9" id="service">Услуги</option>
+                    <option value="10" id="insurance">Страхование</option>
+                    <option value="11" id="eset">ESET</option>
+                    <option value="12" id="subs">Подписки</option>
+                    <option value="13" id="wink">WINK</option>
+                    <option value="14" id="rostelekom">Ростелеком</option>
+                    <option value="15" id="yadd">Я.Адаптер</option>
                 </select>
             </div>
             <input type="text" name="productName" class="form-control mx-2 my-2" aria-label="Введите название товара" placeholder="Введите название товара">
