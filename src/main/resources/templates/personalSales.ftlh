@@ -1,33 +1,32 @@
 <#import "parts/common.ftlh" as common>
 <@common.page>
-    <div class="form-group">
+    <form action="/personalSales" method="post">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <select class="custom-select mx-2 my-2" id="inputGroupSelect01">
+                <select class="custom-select mx-2 my-2" name="inputGroupSelect01">
                     <option selected>Выберте тип товара</option>
-                    <option value="1" id="mr">Мой разговор</option>
-                    <option value="2" id="mo">Мой онлайн</option>
-                    <option value="3" id="mop">Мой онлайн+</option>
-                    <option value="4" id="premium">Премиум</option>
-                    <option value="5" id="otherGi">Другие сим</option>
-                    <option value="6" id="accessory">Аксессуар</option>
-                    <option value="7" id="cellphone">Кнопочный телефон</option>
-                    <option value="8" id="smartphone">Смартфон</option>
-                    <option value="9" id="service">Услуги</option>
-                    <option value="10" id="insurance">Страхование</option>
-                    <option value="11" id="eset">ESET</option>
-                    <option value="12" id="subs">Подписки</option>
-                    <option value="13" id="wink">WINK</option>
-                    <option value="14" id="rostelekom">Ростелеком</option>
-                    <option value="15" id="yadd">Я.Адаптер</option>
+                    <option value="mrid">Мой разговор</option>
+                    <option value="moid">Мой онлайн</option>
+                    <option value="mopid">Мой онлайн+</option>
+                    <option value="premiumid">Премиум</option>
+                    <option value="othergiid">Другие сим</option>
+                    <option value="accessoryid">Аксессуар</option>
+                    <option value="cellphoneid">Кнопочный телефон</option>
+                    <option value="smartphoneid">Смартфон</option>
+                    <option value="serviceid">Услуги</option>
+                    <option value="insuranceid">Страхование</option>
+                    <option value="esetid">ESET</option>
+                    <option value="subsid">Подписки</option>
+                    <option value="winkid">WINK</option>
                 </select>
             </div>
-            <input type="text" name="productName" class="form-control mx-2 my-2" aria-label="Введите название товара" placeholder="Введите название товара">
+            <input type="text" name="productName" class="form-control mx-2 my-2" aria-label="Введите название товара"
+                   placeholder="Введите название товара">
             <input type="text" name="productPrice" class="form-control mx-2 my-2" aria-label="Цена" placeholder="Цена">
             <button type="submit" class="btn btn-primary mx-2 my-2">Сохранить</button>
         </div>
 
-    </div>
+    </form>
     </div>
     <div>
         <table class="table table-striped">
@@ -35,9 +34,10 @@
             <tr>
                 <th scope="col">Наименование</th>
                 <th scope="col">Тип</th>
-                <th scope="col">Количество</th>
+                <th scope="col">Количество<</th>
                 <th scope="col">Цена</th>
-                <th scope="col">Премия</th>
+                <th scope="col">Макс. бонус</th>
+                <th scope="col">Мин. бонус</th>
             </tr>
             </thead>
             <tbody>
@@ -46,8 +46,9 @@
                     <th scope="row">${sale.product.name}</th>
                     <td>${sale.product.type.name}</td>
                     <td>1</td>
-                    <td>${sale.product.price}</td>
-                    <td>${sale.product.reward}</td>
+                    <td>${sale.product.price} р.</td>
+                    <td>${sale.product.maxReward} р.</td>
+                    <td>${sale.product.minReward} р.</td>
                 </tr>
             </#list>
 

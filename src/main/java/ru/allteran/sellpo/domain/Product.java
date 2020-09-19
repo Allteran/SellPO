@@ -11,16 +11,10 @@ public class Product {
     private String name;
     private ProductType type;
     private double price;
-    private double reward;
+    private double maxReward;
+    private double minReward;
 
     public Product() {
-    }
-
-    public Product(String name, ProductType type, double price, double reward) {
-        this.name = name;
-        this.type = type;
-        this.price = price;
-        this.reward = reward;
     }
 
     public String getId() {
@@ -55,11 +49,19 @@ public class Product {
         this.price = price;
     }
 
-    public double getReward() {
-        return reward;
+    public double getMaxReward() {
+        return maxReward;
     }
 
-    public void setReward(double reward) {
-        this.reward = reward;
+    public void setMaxReward(double maxReward) {
+        this.maxReward = maxReward;
+    }
+
+    public double getMinReward() {
+        return minReward;
+    }
+
+    public void setMinReward(double minReward) {
+        this.minReward = minReward;
     }
 }
