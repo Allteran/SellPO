@@ -3,13 +3,18 @@ package ru.allteran.sellpo.domain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotBlank;
+
 @Document
 public class Product {
     @Id
     private String id;
 
+    @NotBlank(message = "Введите название товара")
     private String name;
     private ProductType type;
+
+    @NotBlank(message = "Введите цену товара")
     private double price;
     private double maxReward;
     private double minReward;
