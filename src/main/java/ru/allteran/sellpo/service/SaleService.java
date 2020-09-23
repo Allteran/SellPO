@@ -2,9 +2,11 @@ package ru.allteran.sellpo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.allteran.sellpo.domain.PayType;
 import ru.allteran.sellpo.domain.Product;
 import ru.allteran.sellpo.domain.ProductType;
 import ru.allteran.sellpo.domain.Sale;
+import ru.allteran.sellpo.repo.PayTypeRepository;
 import ru.allteran.sellpo.repo.ProductTypeRepository;
 import ru.allteran.sellpo.repo.SaleRepository;
 
@@ -18,6 +20,9 @@ public class SaleService {
 
     @Autowired
     private ProductTypeRepository productTypeRepository;
+
+    @Autowired
+    private PayTypeRepository payTypeRepository;
 
     @Autowired
     private ProductService productService;
@@ -49,7 +54,7 @@ public class SaleService {
 //            sale.setProduct(product);
 //            sale.setDate("17092020");
 //            sale.setEmployeeId(555547);
-//            sale.setPayType(12);
+//            sale.setPayType(new PayType(Const.PAYTYPE_CASH_ID, Const.PAYTYPE_CASH_NAME));
 //            sale.setId("Saleid+" + i);
 //            sale.setPosId(966739);
 //
@@ -63,7 +68,6 @@ public class SaleService {
 //        repository
 //                .saveAll(testSales);
 //    }
-
     public List<Sale> findAll() {
         return repository.findAll();
     }
@@ -82,37 +86,61 @@ public class SaleService {
 
         Product product = new Product();
 
-        ProductType productType= new ProductType();
+        PayType payType = new PayType();
+        ProductType productType = new ProductType();
         for (String key : form.values()) {
-            if (key.equals(Const.TYPE_MR_ID)) {
-                productType = productTypeRepository.findFirstById(Const.TYPE_MR_ID);
-            } else if (key.equals(Const.TYPE_MO_ID)) {
-                productType = productTypeRepository.findFirstById(Const.TYPE_MOP_ID);
-            } else if (key.equals(Const.TYPE_MOP_ID)) {
-                productType = productTypeRepository.findFirstById(Const.TYPE_MOP_ID);
-            } else if (key.equals(Const.TYPE_PREMIUM_ID)) {
-                productType = productTypeRepository.findFirstById(Const.TYPE_PREMIUM_ID);
-            } else if (key.equals(Const.TYPE_OTHER_GI_ID)) {
-                productType = productTypeRepository.findFirstById(Const.TYPE_OTHER_GI_ID);
-            } else if (key.equals(Const.TYPE_ACCESSORY_ID)) {
-                productType = productTypeRepository.findFirstById(Const.TYPE_ACCESSORY_ID);
-            } else if(key.equals(Const.TYPE_CELLPHONE_ID)) {
-                productType = productTypeRepository.findFirstById(Const.TYPE_CELLPHONE_ID);
-            } else if(key.equals(Const.TYPE_SMARTPHONE_ID)) {
-                productType = productTypeRepository.findFirstById(Const.TYPE_SMARTPHONE_ID);
-            } else if(key.equals(Const.TYPE_SERVICE_ID)) {
-                productType = productTypeRepository.findFirstById(Const.TYPE_SERVICE_ID);
-            } else if (key.equals(Const.TYPE_INSURANCE_ID)) {
-                productType = productTypeRepository.findFirstById(Const.TYPE_INSURANCE_ID);
-            } else if (key.equals(Const.TYPE_ESET_ID)) {
-                productType = productTypeRepository.findFirstById(Const.TYPE_ESET_ID);
-            } else if (key.equals(Const.TYPE_SUBS_ID)) {
-                productType = productTypeRepository.findFirstById(Const.TYPE_SUBS_ID);
-            } else if (key.equals(Const.TYPE_WINK_ID)){
-                productType = productTypeRepository.findFirstById(Const.TYPE_WINK_ID);
+            switch (key) {
+                case Const.TYPE_MR_ID:
+                    productType = productTypeRepository.findFirstById(Const.TYPE_MR_ID);
+                    break;
+                case Const.TYPE_MO_ID:
+                    productType = productTypeRepository.findFirstById(Const.TYPE_MOP_ID);
+                    break;
+                case Const.TYPE_MOP_ID:
+                    productType = productTypeRepository.findFirstById(Const.TYPE_MOP_ID);
+                    break;
+                case Const.TYPE_PREMIUM_ID:
+                    productType = productTypeRepository.findFirstById(Const.TYPE_PREMIUM_ID);
+                    break;
+                case Const.TYPE_OTHER_GI_ID:
+                    productType = productTypeRepository.findFirstById(Const.TYPE_OTHER_GI_ID);
+                    break;
+                case Const.TYPE_ACCESSORY_ID:
+                    productType = productTypeRepository.findFirstById(Const.TYPE_ACCESSORY_ID);
+                    break;
+                case Const.TYPE_CELLPHONE_ID:
+                    productType = productTypeRepository.findFirstById(Const.TYPE_CELLPHONE_ID);
+                    break;
+                case Const.TYPE_SMARTPHONE_ID:
+                    productType = productTypeRepository.findFirstById(Const.TYPE_SMARTPHONE_ID);
+                    break;
+                case Const.TYPE_SERVICE_ID:
+                    productType = productTypeRepository.findFirstById(Const.TYPE_SERVICE_ID);
+                    break;
+                case Const.TYPE_INSURANCE_ID:
+                    productType = productTypeRepository.findFirstById(Const.TYPE_INSURANCE_ID);
+                    break;
+                case Const.TYPE_ESET_ID:
+                    productType = productTypeRepository.findFirstById(Const.TYPE_ESET_ID);
+                    break;
+                case Const.TYPE_SUBS_ID:
+                    productType = productTypeRepository.findFirstById(Const.TYPE_SUBS_ID);
+                    break;
+                case Const.TYPE_WINK_ID:
+                    productType = productTypeRepository.findFirstById(Const.TYPE_WINK_ID);
+                    break;
+                case Const.PAYTYPE_CARD_ID:
+                    payType = payTypeRepository.findFirstById(Const.PAYTYPE_CARD_ID);
+                    break;
+                case Const.PAYTYPE_CASH_ID:
+                    payType = payTypeRepository.findFirstById(Const.PAYTYPE_CASH_ID);
+                    break;
+                case Const.PAYTYPE_CREDIT_ID:
+                    payType = payTypeRepository.findFirstById(Const.PAYTYPE_CREDIT_ID);
+                    break;
             }
-        }
 
+        }
         product.setType(productType);
 
         product.setId(UUID.randomUUID().toString());
@@ -122,6 +150,7 @@ public class SaleService {
         product.setMaxReward(productService.productMaxReward(product));
 
         sale.setProduct(product);
+        sale.setPayType(payType);
         Date date = new Date();
 
         sale.setDate(date.toString());

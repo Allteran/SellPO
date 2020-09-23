@@ -3,7 +3,7 @@
     <form action="/personalSales" method="post">
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <select class="custom-select mx-2 my-2" name="inputGroupSelect01">
+                <select class="custom-select mx-2 my-2" name="productTypeSelector">
                     <option selected value="mrid">SIM: Мой разговор</option>
                     <option value="moid">SIM: Мой онлайн</option>
                     <option value="mopid">SIM: Мой онлайн+</option>
@@ -26,12 +26,19 @@
                     <div class="invalid-feedback">
                         Введите название товара
                     </div>
-                    <input type="text" name="productPrice"
+                    <input type="number" name="productPrice"
                            class="form-control mx-2 my-2"
                            placeholder="Цена" required>
                     <div class="invalid-feedback">
                         Введите цену товара
                     </div>
+                <div class="input-group-prepend">
+                    <select class="custom-select mx-2 my-2" name="payTypeSelector">
+                        <option selected value="paycash">Наличные</option>
+                        <option value="paycard">Карта</option>
+                        <option value="paycredit">Кредит</option>
+                    </select>
+                </div>
                     <button type="submit" class="btn btn-primary mx-2 my-2">Сохранить</button>
             </form>
         </div>

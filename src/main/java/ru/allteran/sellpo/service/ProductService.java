@@ -2,8 +2,10 @@ package ru.allteran.sellpo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.allteran.sellpo.domain.PayType;
 import ru.allteran.sellpo.domain.Product;
 import ru.allteran.sellpo.domain.ProductType;
+import ru.allteran.sellpo.repo.PayTypeRepository;
 import ru.allteran.sellpo.repo.ProductTypeRepository;
 
 import javax.annotation.PostConstruct;
@@ -13,11 +15,16 @@ import java.util.List;
 @Service
 public class ProductService {
     @Autowired
-    private ProductTypeRepository repository;
+    private ProductTypeRepository productTypeRepository;
+
+    @Autowired
+    private PayTypeRepository payTypeRepository;
+
     /**
      * Uncomment next lines only if you are running this code first time on machine
-     * This will create a mongo DB and fill collections with data
-     * In future we need to avoid hardcode like here, just add button for admin to init data
+     * This will create a mongo DB and fill collections with static data
+     * In future we need to avoid hardcode like here, just add button for admin to init static data
+     * static data are PayType and ProductType
      */
 //    private static List<ProductType> typeList = new ArrayList<>();
 //
@@ -37,9 +44,19 @@ public class ProductService {
 //        typeList.add(new ProductType(Const.TYPE_WINK_ID, Const.TYPE_WINK_NAME));
 //    }
 //
+//    private static List<PayType> payTypeList = new ArrayList<>();
+//
+//    static {
+//        payTypeList.add(new PayType(Const.PAYTYPE_CREDIT_ID, Const.PAYTYPE_CREDIT_NAME));
+//        payTypeList.add(new PayType(Const.PAYTYPE_CASH_ID, Const.PAYTYPE_CASH_NAME));
+//        payTypeList.add(new PayType(Const.PAYTYPE_CARD_ID, Const.PAYTYPE_CARD_NAME));
+//    }
+//
+//
 //    @PostConstruct
-//    public void init (){
-//        repository.saveAll(typeList);
+//    public void init() {
+//        productTypeRepository.saveAll(typeList);
+//        payTypeRepository.saveAll(payTypeList);
 //    }
 
     public double productMaxReward(Product product) {

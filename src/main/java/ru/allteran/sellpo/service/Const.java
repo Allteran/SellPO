@@ -35,4 +35,15 @@ public class Const {
     public static final String TYPE_WINK_NAME = "WINK";
     public static final String TYPE_ROSTELECOM_NAME = "Ростелеком";
     public static final String TYPE_YADD_NAME = "Я.Адаптер";
+
+    /**
+     * Here we specified ID's and names for PayTypes
+     */
+    public static final String PAYTYPE_CARD_ID = "paycard";
+    public static final String PAYTYPE_CASH_ID = "paycash";
+    public static final String PAYTYPE_CREDIT_ID = "paycredit";
+
+    public static final String PAYTYPE_CARD_NAME = "Карта";
+    public static final String PAYTYPE_CASH_NAME = "Наличные";
+    public static final String PAYTYPE_CREDIT_NAME = "Кредит";
 }
