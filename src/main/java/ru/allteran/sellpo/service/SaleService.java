@@ -94,7 +94,7 @@ public class SaleService {
                     productType = productTypeRepository.findFirstById(Const.TYPE_MR_ID);
                     break;
                 case Const.TYPE_MO_ID:
-                    productType = productTypeRepository.findFirstById(Const.TYPE_MOP_ID);
+                    productType = productTypeRepository.findFirstById(Const.TYPE_MO_ID);
                     break;
                 case Const.TYPE_MOP_ID:
                     productType = productTypeRepository.findFirstById(Const.TYPE_MOP_ID);
@@ -156,8 +156,6 @@ public class SaleService {
         sale.setDate(date.toString());
         sale.setEmployeeId(employeeId);
         sale.setPosId(posId);
-
-        //TODO: add PayType to Sale in future
 
         repository.save(sale);
     }

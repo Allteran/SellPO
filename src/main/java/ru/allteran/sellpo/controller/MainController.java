@@ -51,4 +51,5 @@ public class MainController {
         model.addAttribute("kpi", kpi);
         return "main";
     }
+
 }
