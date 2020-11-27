@@ -1,11 +1,10 @@
 package ru.allteran.sellpo.testutils;
 
-import ru.allteran.sellpo.domain.Dealer;
-import ru.allteran.sellpo.domain.Employee;
+import ru.allteran.sellpo.domain.User;
 import ru.allteran.sellpo.domain.EmployeeKPI;
 
 public class EmployeeKPITest {
-    private Employee employee;
+    private User user;
 
     private EmployeeKPI initEmplKPI() {
         EmployeeKPI kpi = new EmployeeKPI();
@@ -43,13 +42,13 @@ public class EmployeeKPITest {
         return kpi;
     }
 
-    public Employee initEmployee(long phone, String firstName, String secondName) {
+    public User initEmployee(String phone, String firstName, String secondName) {
 
-        employee.setKpi(initEmplKPI());
+        user.setKpi(initEmplKPI());
 
-        employee.setPhone(phone);
-        employee.setFirstName(firstName);
-        employee.setLastName(secondName);
-        return employee;
+        user.setPhone(phone);
+        user.setFirstName(firstName);
+        user.setLastName(secondName);
+        return user;
     }
 }

@@ -54,9 +54,15 @@
         }
 
         .form-signin input[type="password"] {
-            margin-bottom: 10px;
+            margin-bottom: -1px;
             border-top-left-radius: 0;
             border-top-right-radius: 0;
+        }
+
+        .form-signin input[type="text"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
         }
 
     </style>
@@ -69,16 +75,57 @@
 </head>
 <body>
 <body class="text-center">
-<form class="form-signin">
-    <h1 class="h3 mb-3 front-weight-normal">Авторизация</h1>
-    <label for="inputPhone" class="sr-only">Номер телефона</label>
-    <input type="tel" name="phone" id="inputPhone" class="form-control" placeholder="79XXXXXXXXX" required
-           autofocus>
-    <label for="inputPassword" class="sr-only">Пароль</label>
-    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Пароль" required>
+<form class="form-signin" action="/registration" method="post" name="userForm" novalidate>
+    <h1 class="h3 mb-3 front-weight-normal">Регистрация</h1>
+
+    <label for="inputFirstName" class="sr-only">Имя</label>
+    <input type="text" name="firstName" id="inputFirstName" class="form-control ${(firstNameError??)?string('is-invalid','')}"
+           placeholder="Имя" required autofocus>
+<div class = "invalid-feedback">
+    <#if (firstNameError)??>
+        ${firstNameError}
+    </#if>
+</div>
+    <label for="inputLastName" class="sr-only">Фамилия</label>
+    <input type="text" name="lastName" id="inputLastName"
+           class="form-control ${(lastNameError??)?string('is-invalid','')}" placeholder="Фамилия" required autofocus>
+    <div class="invalid-feedback">
+        <#if (lastNameError)??>
+            ${lastNameError}
+        </#if>
+    </div>
     <div class="mb-3"></div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
-    <a class="mt-8 mb-3" href="/registration">Регистрация</a>
+
+    <label for="inputPhone" class="sr-only">Номер телефона</label>
+    <input type="tel" name="phone" id="inputPhone" class="form-control ${(phoneError??)?string('is-invalid','')}"
+           placeholder="79XXXXXXXXX" required autofocus>
+    <div class="invalid-feedback">
+        <#if (phoneError)?? >
+        ${phoneError}
+        </#if>
+    </div>
+    <div class="mb-3"></div>
+
+    <label for="inputPassword" class="sr-only">Пароль</label>
+    <input type="password" id="inputPassword" name="password"
+           class="form-control ${(passwordError??)?string('is-invalid', '')}" placeholder="Пароль" required>
+    <div class="invalid-feedback">
+        <#if (passwordError)?? >
+            ${passwordError}
+        </#if>
+    </div>
+    <label for="inputPasswordConfirm" class="sr-only">Подтверждение пароля</label>
+    <input type="password" id="inputPasswordConfirm" name="passwordConfirm"
+           class="form-control ${(passwordConfirmError??)?string('is-invalid', '')}" placeholder="Повторите пароль"
+           required>
+    <div class="invalid-feedback">
+        <#if (passwordConfirmError)?? >
+            ${passwordConfirmError}
+        </#if>
+    </div>
+    <div class="mb-3"></div>
+    <input type="hidden" name="_csrf" value="${_csrf.token}">
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Зарегистрироваться</button>
 </form>
 </body>
 <!-- Optional JavaScript -->

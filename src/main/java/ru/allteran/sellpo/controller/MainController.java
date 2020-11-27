@@ -3,16 +3,14 @@ package ru.allteran.sellpo.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import ru.allteran.sellpo.domain.Employee;
+import ru.allteran.sellpo.domain.User;
 import ru.allteran.sellpo.domain.EmployeeKPI;
-import ru.allteran.sellpo.testutils.EmployeeKPITest;
 
 @Controller
 public class MainController {
 
     @GetMapping("/")
-    public String main(Employee employee, Model model) {
+    public String main(User user, Model model) {
         /**
          * The next part of code is super ugly, cuz I hardcoded all of output data
          * But dont worry, it's only for initial test, in next commit i'll cut it

@@ -1,17 +1,30 @@
 package ru.allteran.sellpo.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Document
-public class Employee {
+public class User {
     @Id
-    private double phone;
-    private String password;
+//    @NotBlank(message = "79XXXXXXXXX")
+//    @Size(min = 11, max = 11, message = "79XXXXXXXXX")
+    private String phone;
 
+//    @Size(min = 8, max = 32, message = "Длинна пароля от 8-ми до 32-х символов")
+    private String password;
+    @Transient
+    private String passwordConfirm;
+
+//    @NotBlank(message = "Заполните имя")
     private String firstName;
+
+//    @NotBlank(message = "Заполните фамилию")
     private String lastName;
     private Dealer dealer;
     private boolean active;
@@ -20,14 +33,14 @@ public class Employee {
 
     private EmployeeKPI kpi;
 
-    public Employee() {
+    public User() {
     }
 
-    public double getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(double phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -37,6 +50,14 @@ public class Employee {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
     }
 
     public String getFirstName() {
@@ -89,7 +110,7 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employee{" +
+        return "User{" +
                 "phone=" + phone +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

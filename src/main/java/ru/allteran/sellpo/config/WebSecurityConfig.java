@@ -10,19 +10,19 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.allteran.sellpo.service.MongoUserDetailsService;
+import ru.allteran.sellpo.service.UserDetailService;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private MongoUserDetailsService mongoUserDetailsService;
+    private UserDetailService userDetailService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/main","/registration").permitAll()
+                    .antMatchers("/registration").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(mongoUserDetailsService)
+        auth.userDetailsService(userDetailService)
                 .passwordEncoder(passwordEncoder());
     }
 }
