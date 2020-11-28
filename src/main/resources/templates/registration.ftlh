@@ -79,17 +79,18 @@
     <h1 class="h3 mb-3 front-weight-normal">Регистрация</h1>
 
     <label for="inputFirstName" class="sr-only">Имя</label>
-    <input type="text" name="firstName" id="inputFirstName" class="form-control ${(firstNameError??)?string('is-invalid','')}"
+    <input type="text" name="firstName" id="inputFirstName"
+           class="form-control ${(firstNameError??)?string('is-invalid','')}"
            placeholder="Имя" required autofocus>
-<div class = "invalid-feedback">
-    <#if (firstNameError)??>
-        ${firstNameError}
-    </#if>
-</div>
+    <div class="text-left invalid-feedback m-1 ml-1">
+        <#if (firstNameError)??>
+            ${firstNameError}
+        </#if>
+    </div>
     <label for="inputLastName" class="sr-only">Фамилия</label>
     <input type="text" name="lastName" id="inputLastName"
            class="form-control ${(lastNameError??)?string('is-invalid','')}" placeholder="Фамилия" required autofocus>
-    <div class="invalid-feedback">
+    <div class="text-left invalid-feedback m-1 ml-1">
         <#if (lastNameError)??>
             ${lastNameError}
         </#if>
@@ -98,10 +99,10 @@
 
     <label for="inputPhone" class="sr-only">Номер телефона</label>
     <input type="tel" name="phone" id="inputPhone" class="form-control ${(phoneError??)?string('is-invalid','')}"
-           placeholder="79XXXXXXXXX" required autofocus>
-    <div class="invalid-feedback">
+           pattern="79[0-9]{9}" placeholder="79XXXXXXXXX" required autofocus>
+    <div class="text-left invalid-feedback m-1 ml-1">
         <#if (phoneError)?? >
-        ${phoneError}
+            ${phoneError}
         </#if>
     </div>
     <div class="mb-3"></div>
@@ -109,7 +110,7 @@
     <label for="inputPassword" class="sr-only">Пароль</label>
     <input type="password" id="inputPassword" name="password"
            class="form-control ${(passwordError??)?string('is-invalid', '')}" placeholder="Пароль" required>
-    <div class="invalid-feedback">
+    <div class="text-left invalid-feedback m-1 ml-1">
         <#if (passwordError)?? >
             ${passwordError}
         </#if>
@@ -118,7 +119,7 @@
     <input type="password" id="inputPasswordConfirm" name="passwordConfirm"
            class="form-control ${(passwordConfirmError??)?string('is-invalid', '')}" placeholder="Повторите пароль"
            required>
-    <div class="invalid-feedback">
+    <div class="text-left invalid-feedback m-1 ml-11">
         <#if (passwordConfirmError)?? >
             ${passwordConfirmError}
         </#if>

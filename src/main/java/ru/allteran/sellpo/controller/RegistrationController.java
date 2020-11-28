@@ -7,21 +7,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import ru.allteran.sellpo.domain.Role;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.allteran.sellpo.domain.User;
-import ru.allteran.sellpo.repo.UserRepository;
 import ru.allteran.sellpo.service.UserService;
 import ru.allteran.sellpo.service.UserValidator;
 
-import javax.validation.Valid;
-import java.util.Collections;
 import java.util.Map;
 
 @Controller
 public class RegistrationController {
+    public static final String SUCCESS_REGISTRATION_MESSAGE ="Регистрация завершена";
     private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
 
     @Autowired
@@ -35,7 +31,8 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String userRegistration(User userForm, BindingResult bindingResult, Model model) {
+    public String userRegistration(User userForm, BindingResult bindingResult, Model model,
+                                   RedirectAttributes redirectAttributes) {
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -44,6 +41,9 @@ public class RegistrationController {
             return "registration";
         }
         userService.save(userForm);
+
+
+        redirectAttributes.addFlashAttribute("afterRegistrationMessage", SUCCESS_REGISTRATION_MESSAGE);
         return "redirect:/login";
     }
 }

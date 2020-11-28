@@ -30,9 +30,8 @@
             padding: 15px;
             margin: 0 auto;
         }
-
-        .form-signin .checkbox {
-            font-weight: 400;
+        div {
+            word-wrap: normal   ;
         }
 
         .form-signin .form-control {
@@ -70,6 +69,13 @@
 <body>
 <body class="text-center">
 <form class="form-signin">
+    <#if (afterRegistrationMessage)??>
+        <div class="m-4">
+            <div class="alert alert-success" role="alert">
+                ${afterRegistrationMessage}
+            </div>
+        </div>
+    </#if>
     <h1 class="h3 mb-3 front-weight-normal">Авторизация</h1>
     <label for="inputPhone" class="sr-only">Номер телефона</label>
     <input type="tel" name="phone" id="inputPhone" class="form-control" placeholder="79XXXXXXXXX" required

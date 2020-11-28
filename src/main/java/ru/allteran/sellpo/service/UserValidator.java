@@ -7,6 +7,9 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import ru.allteran.sellpo.domain.User;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Component
 public class UserValidator implements Validator {
     @Autowired
@@ -29,6 +32,18 @@ public class UserValidator implements Validator {
         if (user.getPhone().length() != 11) {
             errors.rejectValue("phone", "79XXXXXXXXX");
         }
+        /**
+         * Next line uses regex to check if input string matches with special regex pattern
+         * \ - means that it's gonna be regular expresion, so wait for the pattern
+         * \^ - means that it will starts from new line
+         * ?(79) - means that at the begining gonna be two numbers "79"
+         * \d - means that next text is digits
+         * {9} - means that it gonna be only 9 number of digits, no more or less
+         */
+        if(!user.getPhone().matches("\\^?(79)\\d{9}")) {
+            errors.rejectValue("phone", "79XXXXXXXXX");
+        }
+        //TODO: check if it load data from db well
         if (userService.findByPhone(user.getPhone()) != null) {
             errors.rejectValue("phone", "Данный номер уже используется");
         }
@@ -37,6 +52,7 @@ public class UserValidator implements Validator {
         if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
             errors.rejectValue("password", "Длинна пароля от 8-ми до 32-х символов");
         }
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordConfirm", "Необходимо заполнить");
         if(!user.getPasswordConfirm().equals(user.getPassword())) {
             errors.rejectValue("passwordConfirm", "Пароли не совпадают");
         }
