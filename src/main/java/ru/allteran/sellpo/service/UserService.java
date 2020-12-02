@@ -23,8 +23,11 @@ public class UserService  {
 
     public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(new HashSet<>(roleRepo.findAll()));
 
+        Set<Role> defaultRole = new HashSet<>();
+        defaultRole.add(roleRepo.findFirstById(Role.ID_USER));
+
+        user.setRoles(defaultRole);
         userRepo.save(user);
     }
 

@@ -9,11 +9,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.allteran.sellpo.domain.Role;
 import ru.allteran.sellpo.domain.User;
 import ru.allteran.sellpo.service.UserService;
 import ru.allteran.sellpo.service.UserValidator;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 public class RegistrationController {
@@ -42,7 +45,6 @@ public class RegistrationController {
             return "registration";
         }
         userService.save(userForm);
-
 
         redirectAttributes.addFlashAttribute("alertMessage", SUCCESS_REGISTRATION_MESSAGE);
         return "redirect:/login";

@@ -10,4 +10,5 @@ import java.util.List;
 public interface RoleRepository extends MongoRepository<Role, Long> {
     List<Role> findAll();
 
+    Role findFirstById(long id);
 }
