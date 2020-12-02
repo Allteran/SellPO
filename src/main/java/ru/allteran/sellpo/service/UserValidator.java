@@ -7,9 +7,6 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import ru.allteran.sellpo.domain.User;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 @Component
 public class UserValidator implements Validator {
     @Autowired
@@ -43,7 +40,6 @@ public class UserValidator implements Validator {
         if(!user.getPhone().matches("\\^?(79)\\d{9}")) {
             errors.rejectValue("phone", "79XXXXXXXXX");
         }
-        //TODO: check if it load data from db well
         if (userService.findByPhone(user.getPhone()) != null) {
             errors.rejectValue("phone", "Данный номер уже используется");
         }
@@ -58,4 +54,6 @@ public class UserValidator implements Validator {
         }
 
     }
+
+
 }

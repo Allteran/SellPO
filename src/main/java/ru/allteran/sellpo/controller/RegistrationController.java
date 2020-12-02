@@ -17,8 +17,9 @@ import java.util.Map;
 
 @Controller
 public class RegistrationController {
-    public static final String SUCCESS_REGISTRATION_MESSAGE ="Регистрация завершена";
+    public static final String SUCCESS_REGISTRATION_MESSAGE = "Регистрация завершена";
     private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
+    private static final String LOGIN_ERROR_MESSAGE = "Неверное имя пользователя или пароль";
 
     @Autowired
     private UserValidator userValidator;
@@ -43,7 +44,16 @@ public class RegistrationController {
         userService.save(userForm);
 
 
-        redirectAttributes.addFlashAttribute("afterRegistrationMessage", SUCCESS_REGISTRATION_MESSAGE);
+        redirectAttributes.addFlashAttribute("alertMessage", SUCCESS_REGISTRATION_MESSAGE);
         return "redirect:/login";
     }
+
+    @GetMapping("/login")
+    public String login(Model model, String error) {
+        if (error != null) {
+            model.addAttribute("loginError", LOGIN_ERROR_MESSAGE);
+        }
+        return "login";
+    }
+
 }

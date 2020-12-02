@@ -68,21 +68,27 @@
 </head>
 <body>
 <body class="text-center">
-<form class="form-signin">
-    <#if (afterRegistrationMessage)??>
-        <div class="m-4">
+<form class="form-signin" action="/login" method="post">
+    <#if (alertMessage)??>
+        <div class="mb-3">
             <div class="alert alert-success" role="alert">
-                ${afterRegistrationMessage}
+                ${alertMessage}
             </div>
         </div>
     </#if>
     <h1 class="h3 mb-3 front-weight-normal">Авторизация</h1>
     <label for="inputPhone" class="sr-only">Номер телефона</label>
-    <input type="tel" name="phone" id="inputPhone" class="form-control" placeholder="79XXXXXXXXX" required
+    <input type="tel" name="phone" id="inputPhone" class="form-control ${(loginError??)?string('is-invalid', '')}" placeholder="79XXXXXXXXX" required
            autofocus>
     <label for="inputPassword" class="sr-only">Пароль</label>
-    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Пароль" required>
+    <input type="password" id="inputPassword" name="password" class="form-control ${(loginError??)?string('is-invalid', '')}" placeholder="Пароль" required>
+    <div class="text-left invalid-feedback m-1 ml-1">
+        <#if (loginError)??>
+            ${loginError}
+        </#if>
+    </div>
     <div class="mb-3"></div>
+    <input type="hidden" name="_csrf" value="${_csrf.token}">
     <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
     <a class="mt-8 mb-3" href="/registration">Регистрация</a>
 </form>
