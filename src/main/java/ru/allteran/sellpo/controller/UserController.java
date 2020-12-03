@@ -9,6 +9,7 @@ import ru.allteran.sellpo.domain.User;
 import ru.allteran.sellpo.service.UserService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Controller
@@ -30,11 +31,20 @@ public class UserController {
         return "userEdit";
     }
 
-    //TODO: edit next method to save user by clicking on "save" button into view
-    @PostMapping(value = "/user/{user}", params = "save")
+    @PostMapping(value = "/user/{user}", params = {"save"})
     public String userSave(
-            User userForm) {
+            @RequestParam("phone") User user,
+            String firstName, String lastName, String phone, String password, Map<String, String> form) {
+        //TODO: use userValidator to validate all fields
+        userService.userSave(user, form, phone, firstName, lastName, password);
         System.out.println("user saved");
+        return "redirect:/user/" + user.getPhone();
+    }
+
+    @PostMapping(value = "/user/{user}", params = {"delete"})
+    public String userDelete(User user) {
+        System.out.println("user deleted");
         return "redirect:/userList";
     }
+
 }

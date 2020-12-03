@@ -41,7 +41,7 @@ public class RegistrationController {
             model.mergeAttributes(errors);
             return "registration";
         }
-        userService.save(userForm);
+        userService.addUser(userForm);
 
         redirectAttributes.addFlashAttribute("alertMessage", SUCCESS_REGISTRATION_MESSAGE);
         return "redirect:/login";

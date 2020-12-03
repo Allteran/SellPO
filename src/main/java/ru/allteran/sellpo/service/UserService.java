@@ -3,15 +3,14 @@ package ru.allteran.sellpo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import ru.allteran.sellpo.domain.Role;
 import ru.allteran.sellpo.domain.User;
 import ru.allteran.sellpo.repo.RoleRepository;
 import ru.allteran.sellpo.repo.UserRepository;
 
 import javax.annotation.PostConstruct;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -22,7 +21,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public void save(User user) {
+    public void addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Set<Role> defaultRole = new HashSet<>();
@@ -38,6 +37,31 @@ public class UserService {
 
     public List<User> findAll() {
         return userRepo.findAll();
+    }
+
+    public void userSave(User user, Map<String, String> form, String phone, String firstName, String lastName, String password) {
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+
+        if (!StringUtils.isEmpty(phone)) {
+            user.setPhone(phone);
+        }
+
+        if (!StringUtils.isEmpty(password)) {
+            user.setPassword(passwordEncoder.encode(password));
+        }
+
+        user.getRoles().clear();
+        Set<Role> roles = new HashSet<>(roleRepo.findAll());
+
+        //TODO: next lines DO NOT WORK. Form doesn't contain keys that I need. Next time try to get exactly checkbox value and set it
+        for (String key : form.keySet()) {
+            if (roles.contains(roleRepo.findFirstById(Long.valueOf(key)))) {
+                user.getRoles().add(roleRepo.findFirstById(Long.valueOf(key)));
+            }
+        }
+
+        userRepo.save(user);
     }
 
 
