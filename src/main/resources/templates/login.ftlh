@@ -57,8 +57,7 @@
             border-top-left-radius: 0;
             border-top-right-radius: 0;
         }
-
-    </style>
+        </style>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
@@ -78,10 +77,12 @@
     </#if>
     <h1 class="h3 mb-3 front-weight-normal">Авторизация</h1>
     <label for="inputPhone" class="sr-only">Номер телефона</label>
-    <input type="tel" name="username" id="inputPhone" class="form-control ${(loginError??)?string('is-invalid', '')}" placeholder="79XXXXXXXXX" required
+    <input type="tel" name="username" id="inputPhone" class="form-control ${(loginError??)?string('is-invalid', '')}"
+           placeholder="79XXXXXXXXX" required
            autofocus>
     <label for="inputPassword" class="sr-only">Пароль</label>
-    <input type="password" id="inputPassword" name="password" class="form-control ${(loginError??)?string('is-invalid', '')}" placeholder="Пароль" required>
+    <input type="password" id="inputPassword" name="password"
+           class="form-control ${(loginError??)?string('is-invalid', '')}" placeholder="Пароль" required>
     <div class="text-left invalid-feedback m-1 ml-1">
         <#if (loginError)??>
             ${loginError}

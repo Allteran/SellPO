@@ -1,4 +1,4 @@
-                      html,
+html,
 body {
     height: 100%;
 }
@@ -24,9 +24,8 @@ body {
     padding: 15px;
     margin: 0 auto;
 }
-
-.form-signin .checkbox {
-    font-weight: 400;
+div {
+    word-wrap: normal   ;
 }
 
 .form-signin .form-control {

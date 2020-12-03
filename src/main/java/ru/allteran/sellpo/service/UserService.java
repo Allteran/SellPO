@@ -10,10 +10,11 @@ import ru.allteran.sellpo.repo.UserRepository;
 
 import javax.annotation.PostConstruct;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
-public class UserService  {
+public class UserService {
     @Autowired
     private UserRepository userRepo;
     @Autowired
@@ -31,8 +32,12 @@ public class UserService  {
         userRepo.save(user);
     }
 
-    public User findByPhone (String phone) {
+    public User findByPhone(String phone) {
         return userRepo.findByPhone(phone);
+    }
+
+    public List<User> findAll() {
+        return userRepo.findAll();
     }
 
 
