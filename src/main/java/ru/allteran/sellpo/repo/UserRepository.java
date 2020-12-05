@@ -5,5 +5,5 @@ import ru.allteran.sellpo.domain.User;
 
 public interface UserRepository extends MongoRepository<User, String> {
     User findByPhone(String phone);
-
 }
+

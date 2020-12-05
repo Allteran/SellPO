@@ -16,7 +16,7 @@
                     <td><a href="/user/${user.phone}">${user.phone}</a></td>
                     <td>${user.firstName} ${user.lastName}</td>
                     <td><#list user.roles as role>${role.name}<#sep>, </#list> </td>
-                    <td><#if (user.active)??>Активен<#else>Не активен</#if></td>
+                    <td><#if user.active>Активен<#else>Не активен</#if></td>
                 </tr>
             </#list>
             </tbody>
