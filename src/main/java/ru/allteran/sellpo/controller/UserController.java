@@ -21,6 +21,8 @@ import java.util.Set;
 
 @Controller
 public class UserController {
+    private static final String ERROR_SAVING_USER_MESSAGE = "Что-то пошло не так, попробуйте снова";
+    private static final String SUCCESS_SAVING_USER_MESSAGE = "Пользовател успешно изменен";
     @Autowired
     private UserService userService;
     @Autowired
@@ -42,25 +44,33 @@ public class UserController {
         Set<Role> roles = new HashSet<>(rolesRepo.findAll());
         model.addAttribute("roles", roles);
         model.addAttribute("user", user);
+        model.addAttribute("userPhone", user.getPhone());
         return "userEdit";
     }
 
     @PostMapping(value = "/user", params = {"save"})
     public String userSave(
-            @Valid User userForm, @RequestParam("userPhone") User incUser, BindingResult bindingResult, Model model) {
+            @Valid User userForm, @RequestParam("userPhone") User incUser,
+            @RequestParam Map<String, String> form, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
         //TODO: use userValidator to validate all fields
         userEditValidator.validate(userForm, bindingResult);
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = ControllerUtils.getFieldErrors(bindingResult);
             Set<Role> roles = new HashSet<>(rolesRepo.findAll());
             model.addAttribute("roles", roles);
-            model.addAttribute("userPhone", incUser.getPhone());
+            if (incUser != null) {
+                model.addAttribute("userPhone", incUser.getPhone());
+            }
             model.mergeAttributes(errors);
             return "userEdit";
         }
-
-        userService.userSave(userForm, incUser);
-        System.out.println("user saved");
+        if(incUser == null) {
+            redirectAttributes.addFlashAttribute("alertMessage", ERROR_SAVING_USER_MESSAGE);
+        } else {
+            userService.userSave(userForm, incUser, form);
+            redirectAttributes.addFlashAttribute("alertMessage", SUCCESS_SAVING_USER_MESSAGE);
+            System.out.println("user saved");
+        }
         return "redirect:/userlist";
     }
 

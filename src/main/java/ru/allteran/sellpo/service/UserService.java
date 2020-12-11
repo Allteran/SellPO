@@ -44,7 +44,7 @@ public class UserService {
      * @param userConfirm - represents User before edit. It stores all incoming data. When we gonna update user in DB
      *                    we should compare editedUser with userConfirm to check if we have changed any of fields
      */
-    public void userSave(User editedUser, User userConfirm) {
+    public void userSave(User editedUser, User userConfirm, Map<String, String> form) {
         if (StringUtils.isEmpty(editedUser.getFirstName())) {
             editedUser.setFirstName(userConfirm.getFirstName());
         }
@@ -57,11 +57,22 @@ public class UserService {
         if (StringUtils.isEmpty(editedUser.getPassword())) {
             editedUser.setPassword(userConfirm.getPassword());
         }
-        //TODO: transfer data from checked checkboxes to Set of Roles for userForm
-        editedUser.setRoles(userConfirm.getRoles());
 
-        //TODO:check how to UPDATE entity in collection. If we cant do it - we need to delete from database old entity first
+        editedUser.getRoles().clear();
+        Set<Role> rolesFromDb = new HashSet<>(roleRepo.findAll());
 
+        for (String key : form.keySet()) {
+            Role keyRole = roleRepo.findByName(key);
+            if (keyRole != null) {
+                if (rolesFromDb.contains(keyRole)) {
+                    editedUser.getRoles().add(keyRole);
+                }
+            }
+        }
+
+        if(editedUser.getRoles().isEmpty()) {
+            editedUser.setRoles(userConfirm.getRoles());
+        }
         userRepo.save(editedUser);
     }
 

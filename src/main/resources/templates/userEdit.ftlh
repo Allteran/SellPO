@@ -5,7 +5,7 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="inputPhone">Номер телефона</label>
-                <input type="tel" class="form-control ${(phoneError??)?string('is-invalid','')}" id="inputPhone" name="phone" value="${user.phone}"
+                <input type="tel" class="form-control ${(phoneError??)?string('is-invalid','')}" id="inputPhone" name="phone"
                        placeholder="${user.phone}">
                 <div class="text-left invalid-feedback m-1 ml-1">
                     <#if (phoneError)??>
