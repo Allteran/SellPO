@@ -1,10 +1,11 @@
 <#import "parts/common.ftlh" as common>
 <@common.page>
-    <form action="/user/{user}" method="post" name="userForm" class="form-signin m-3">
+    <form action="/user" method="post" name="userForm" class="form-signin m-3">
+        <input type="hidden" name="userPhone" value="${user.phone}"/>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="inputPhone">Номер телефона</label>
-                <input type="tel" class="form-control" id="inputPhone" name="phone" value="${user.phone}"
+                <input type="tel" class="form-control ${(phoneError??)?string('is-invalid','')}" id="inputPhone" name="phone" value="${user.phone}"
                        placeholder="${user.phone}">
                 <div class="text-left invalid-feedback m-1 ml-1">
                     <#if (phoneError)??>
@@ -14,7 +15,7 @@
             </div>
             <div class="form-group col-md-6">
                 <label for="inputPassword">Пароль</label>
-                <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Пароль">
+                <input type="password" class="form-control ${(passwordError??)?string('is-invalid','')}" id="inputPassword" name="password" placeholder="Пароль">
                 <div class="text-left invalid-feedback m-1 ml-1">
                     <#if (passwordError)??>
                         ${passwordError}
@@ -40,9 +41,11 @@
                 <#list roles as role>
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="roleCheckbox" name="${role.name}"
-                               <#list user.roles as uRole>
-                                   <#if role.id == uRole.id>checked</#if>
-                               </#list>
+                            <#if user.roles??>
+                            <#list user.roles as uRole>
+                               <#if role.id == uRole.id>checked</#if>
+                        </#list>
+                        </#if>
                         <label for="roleCheckbox" class="form-check-label">${role.name}</label>
                     </div>
                 </#list>

@@ -26,7 +26,7 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/userList" tabindex="-1">Список пользователей</a>
+                <a class="nav-link" href="/userlist" tabindex="-1">Список пользователей</a>
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0" action="/logout" method="post">

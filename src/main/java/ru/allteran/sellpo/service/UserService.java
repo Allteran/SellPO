@@ -39,29 +39,30 @@ public class UserService {
         return userRepo.findAll();
     }
 
-    public void userSave(User user, Map<String, String> form, String phone, String firstName, String lastName, String password) {
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-
-        if (!StringUtils.isEmpty(phone)) {
-            user.setPhone(phone);
+    /**
+     * @param editedUser  - represents User that we edit. It stores all changed data, to compare it and save to DB
+     * @param userConfirm - represents User before edit. It stores all incoming data. When we gonna update user in DB
+     *                    we should compare editedUser with userConfirm to check if we have changed any of fields
+     */
+    public void userSave(User editedUser, User userConfirm) {
+        if (StringUtils.isEmpty(editedUser.getFirstName())) {
+            editedUser.setFirstName(userConfirm.getFirstName());
         }
-
-        if (!StringUtils.isEmpty(password)) {
-            user.setPassword(passwordEncoder.encode(password));
+        if (StringUtils.isEmpty(editedUser.getLastName())) {
+            editedUser.setLastName(userConfirm.getLastName());
         }
-
-        user.getRoles().clear();
-        Set<Role> roles = new HashSet<>(roleRepo.findAll());
-
-        //TODO: next lines DO NOT WORK. Form doesn't contain keys that I need. Next time try to get exactly checkbox value and set it
-        for (String key : form.keySet()) {
-            if (roles.contains(roleRepo.findFirstById(Long.valueOf(key)))) {
-                user.getRoles().add(roleRepo.findFirstById(Long.valueOf(key)));
-            }
+        if (StringUtils.isEmpty(editedUser.getPhone())) {
+            editedUser.setPhone(userConfirm.getPhone());
         }
+        if (StringUtils.isEmpty(editedUser.getPassword())) {
+            editedUser.setPassword(userConfirm.getPassword());
+        }
+        //TODO: transfer data from checked checkboxes to Set of Roles for userForm
+        editedUser.setRoles(userConfirm.getRoles());
 
-        userRepo.save(user);
+        //TODO:check how to UPDATE entity in collection. If we cant do it - we need to delete from database old entity first
+
+        userRepo.save(editedUser);
     }
 
 

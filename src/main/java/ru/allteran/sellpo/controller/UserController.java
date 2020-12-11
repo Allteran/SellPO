@@ -5,10 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.allteran.sellpo.domain.Role;
 import ru.allteran.sellpo.domain.User;
@@ -32,7 +29,7 @@ public class UserController {
     private RoleRepository rolesRepo;
 
 
-    @GetMapping("/userList")
+    @GetMapping("/userlist")
     public String userList(Model model) {
         List<User> users = userService.findAll();
         model.addAttribute("users", users);
@@ -48,30 +45,29 @@ public class UserController {
         return "userEdit";
     }
 
-    @PostMapping(value = "/user/{user}", params = {"save"})
+    @PostMapping(value = "/user", params = {"save"})
     public String userSave(
-            @Valid User userForm,
-            String firstName, String lastName, String phone, String password, Map<String, String> form,
-            BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+            @Valid User userForm, @RequestParam("userPhone") User incUser, BindingResult bindingResult, Model model) {
         //TODO: use userValidator to validate all fields
-        if (StringUtils.isEmpty(phone)) {
-            phone = userForm.getPhone();
-        }
         userEditValidator.validate(userForm, bindingResult);
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = ControllerUtils.getFieldErrors(bindingResult);
-            redirectAttributes.addFlashAttribute(errors);
+            Set<Role> roles = new HashSet<>(rolesRepo.findAll());
+            model.addAttribute("roles", roles);
+            model.addAttribute("userPhone", incUser.getPhone());
+            model.mergeAttributes(errors);
             return "userEdit";
         }
-        userService.userSave(userForm, form, phone, firstName, lastName, password);
+
+        userService.userSave(userForm, incUser);
         System.out.println("user saved");
-        return "redirect:/user/" + userForm.getPhone();
+        return "redirect:/userlist";
     }
 
-    @PostMapping(value = "/user/{user}", params = {"delete"})
-    public String userDelete(User user) {
-        System.out.println("user deleted");
-        return "redirect:/userList";
-    }
+//    @PostMapping(value = "/user/{user}", params = {"delete"})
+//    public String userDelete(User user) {
+//        System.out.println("user deleted");
+//        return "redirect:/userList";
+//    }
 
 }
