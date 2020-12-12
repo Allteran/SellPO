@@ -58,20 +58,30 @@ public class UserService {
             editedUser.setPassword(userConfirm.getPassword());
         }
 
+        if (editedUser.getRoles() == null) {
+            editedUser.setRoles(userConfirm.getRoles());
+        }
         editedUser.getRoles().clear();
         Set<Role> rolesFromDb = new HashSet<>(roleRepo.findAll());
 
         for (String key : form.keySet()) {
+            System.out.println("Form key is: " + key);
             Role keyRole = roleRepo.findByName(key);
             if (keyRole != null) {
-                if (rolesFromDb.contains(keyRole)) {
-                    editedUser.getRoles().add(keyRole);
+                System.out.println("keyRole not null, keyRole.name = " + keyRole.getName());
+                for(Role roleFromDB : rolesFromDb) {
+                    if(roleFromDB.getId() == keyRole.getId()) {
+                        System.out.println("rolesFromDB contains keyRole with name " + keyRole.getName());
+                        editedUser.getRoles().add(keyRole);
+                        System.out.println("keyRole added into EditedUser");
+                    }
                 }
             }
         }
 
-        if(editedUser.getRoles().isEmpty()) {
-            editedUser.setRoles(userConfirm.getRoles());
+        System.out.println("editedUser roles are: " + editedUser.getRoles().toString());
+        if (!editedUser.getPassword().equals(userConfirm.getPhone())) {
+            userRepo.delete(userConfirm);
         }
         userRepo.save(editedUser);
     }

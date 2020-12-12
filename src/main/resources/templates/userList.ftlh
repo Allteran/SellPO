@@ -1,6 +1,16 @@
 <#import "parts/common.ftlh" as common>
 <@common.page>
     <div>
+        <#if (errorMessage)??>
+            <div class="alert alert-danger" role="alert">
+                ${errorMessage}
+            </div>
+        </#if>
+        <#if (successMessage)??>
+            <div class="alert alert-success" role="alert">
+                ${successMessage}
+            </div>
+        </#if>
         <table class="table table-striped">
             <thead>
             <tr>

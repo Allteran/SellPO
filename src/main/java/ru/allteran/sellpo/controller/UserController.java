@@ -65,10 +65,10 @@ public class UserController {
             return "userEdit";
         }
         if(incUser == null) {
-            redirectAttributes.addFlashAttribute("alertMessage", ERROR_SAVING_USER_MESSAGE);
+            redirectAttributes.addFlashAttribute("errorMessage", ERROR_SAVING_USER_MESSAGE);
         } else {
             userService.userSave(userForm, incUser, form);
-            redirectAttributes.addFlashAttribute("alertMessage", SUCCESS_SAVING_USER_MESSAGE);
+            redirectAttributes.addFlashAttribute("successMessage", SUCCESS_SAVING_USER_MESSAGE);
             System.out.println("user saved");
         }
         return "redirect:/userlist";
