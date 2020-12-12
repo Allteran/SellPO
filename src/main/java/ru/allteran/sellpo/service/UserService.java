@@ -56,6 +56,8 @@ public class UserService {
         }
         if (StringUtils.isEmpty(editedUser.getPassword())) {
             editedUser.setPassword(userConfirm.getPassword());
+        } else {
+            editedUser.setPassword(passwordEncoder.encode(editedUser.getPassword()));
         }
 
         if (editedUser.getRoles() == null) {
@@ -65,25 +67,32 @@ public class UserService {
         Set<Role> rolesFromDb = new HashSet<>(roleRepo.findAll());
 
         for (String key : form.keySet()) {
-            System.out.println("Form key is: " + key);
             Role keyRole = roleRepo.findByName(key);
             if (keyRole != null) {
-                System.out.println("keyRole not null, keyRole.name = " + keyRole.getName());
-                for(Role roleFromDB : rolesFromDb) {
-                    if(roleFromDB.getId() == keyRole.getId()) {
-                        System.out.println("rolesFromDB contains keyRole with name " + keyRole.getName());
+                for (Role roleFromDB : rolesFromDb) {
+                    if (roleFromDB.getId() == keyRole.getId()) {
                         editedUser.getRoles().add(keyRole);
-                        System.out.println("keyRole added into EditedUser");
                     }
                 }
             }
         }
 
-        System.out.println("editedUser roles are: " + editedUser.getRoles().toString());
+        editedUser.setActive(false);
+        for (String key : form.keySet()) {
+            if (key.equals("radioActive")) {
+                editedUser.setActive(true);
+            }
+        }
+
         if (!editedUser.getPassword().equals(userConfirm.getPhone())) {
             userRepo.delete(userConfirm);
         }
         userRepo.save(editedUser);
+    }
+
+    public void deleteUser(String phone) {
+        User userToDelete = userRepo.findByPhone(phone);
+        userRepo.delete(userToDelete);
     }
 
 

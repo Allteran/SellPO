@@ -16,15 +16,15 @@ public class User {
 //    @Size(min = 11, max = 11, message = "79XXXXXXXXX")
     private String phone;
 
-//    @Size(min = 8, max = 32, message = "Длинна пароля от 8-ми до 32-х символов")
+    //    @Size(min = 8, max = 32, message = "Длинна пароля от 8-ми до 32-х символов")
     private String password;
     @Transient
     private String passwordConfirm;
 
-//    @NotBlank(message = "Заполните имя")
+    //    @NotBlank(message = "Заполните имя")
     private String firstName;
 
-//    @NotBlank(message = "Заполните фамилию")
+    //    @NotBlank(message = "Заполните фамилию")
     private String lastName;
     private Dealer dealer;
     private boolean active;
@@ -34,6 +34,17 @@ public class User {
     private EmployeeKPI kpi;
 
     public User() {
+    }
+
+    public boolean isAdmin() {
+        for (Role role : roles) {
+            if (role.getId() == Role.ID_ADMIN) return true;
+        }
+        return false;
+    }
+
+    public String getFullname() {
+        return firstName + " " + lastName;
     }
 
     public String getPhone() {

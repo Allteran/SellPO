@@ -3,7 +3,6 @@ package ru.allteran.sellpo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -21,8 +20,9 @@ import java.util.Set;
 
 @Controller
 public class UserController {
-    private static final String ERROR_SAVING_USER_MESSAGE = "Что-то пошло не так, попробуйте снова";
+    private static final String ERROR_USER_MESSAGE = "Что-то пошло не так, попробуйте снова";
     private static final String SUCCESS_SAVING_USER_MESSAGE = "Пользовател успешно изменен";
+    private static final String SUCCESS_DELETE_USER_MESSAGE = "Пользователь успешно удален";
     @Autowired
     private UserService userService;
     @Autowired
@@ -65,19 +65,25 @@ public class UserController {
             return "userEdit";
         }
         if(incUser == null) {
-            redirectAttributes.addFlashAttribute("errorMessage", ERROR_SAVING_USER_MESSAGE);
+            redirectAttributes.addFlashAttribute("errorMessage", ERROR_USER_MESSAGE);
         } else {
             userService.userSave(userForm, incUser, form);
             redirectAttributes.addFlashAttribute("successMessage", SUCCESS_SAVING_USER_MESSAGE);
-            System.out.println("user saved");
         }
         return "redirect:/userlist";
     }
 
-//    @PostMapping(value = "/user/{user}", params = {"delete"})
-//    public String userDelete(User user) {
-//        System.out.println("user deleted");
-//        return "redirect:/userList";
-//    }
+    @PostMapping(value = "/user", params = {"delete"})
+    public String userDelete(@RequestParam("userPhone") User user, RedirectAttributes redirectAttributes) {
+        if(user == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", ERROR_USER_MESSAGE);
+            return "redirect:/userlist";
+        } else {
+            redirectAttributes.addFlashAttribute("successMessage", SUCCESS_DELETE_USER_MESSAGE);
+            userService.deleteUser(user.getPhone());
+        }
+        System.out.println("user deleted");
+        return "redirect:/userlist";
+    }
 
 }

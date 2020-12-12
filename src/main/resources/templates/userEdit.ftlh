@@ -70,8 +70,7 @@
                 <button class="btn btn-outline-primary form-control" name="save" type="submit">Сохранить</button>
             </div>
             <div class="form-group col-md-6">
-                <button class="btn btn-outline-danger form-control" name="delete" type="submit">Удалить пользователя
-                </button>
+                <button class="btn btn-outline-danger form-control" name="delete" type="submit">Удалить пользователя</button>
             </div>
         </div>
     </form>
