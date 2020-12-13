@@ -1,10 +1,14 @@
 package ru.allteran.sellpo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.allteran.sellpo.domain.Role;
 import ru.allteran.sellpo.domain.User;
@@ -30,7 +34,7 @@ public class UserController {
     @Autowired
     private RoleRepository rolesRepo;
 
-
+    @PreAuthorize("hasRole('admin')")
     @GetMapping("/userlist")
     public String userList(Model model) {
         List<User> users = userService.findAll();
@@ -39,6 +43,8 @@ public class UserController {
         return "userList";
     }
 
+    //TODO: @PReAuthorize not working with real ADMIN user
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/user/{user}")
     public String userEditForm(@PathVariable User user, Model model) {
         Set<Role> roles = new HashSet<>(rolesRepo.findAll());
@@ -48,6 +54,7 @@ public class UserController {
         return "userEdit";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/user", params = {"save"})
     public String userSave(
             @Valid User userForm, @RequestParam("userPhone") User incUser,
@@ -64,7 +71,7 @@ public class UserController {
             model.mergeAttributes(errors);
             return "userEdit";
         }
-        if(incUser == null) {
+        if (incUser == null) {
             redirectAttributes.addFlashAttribute("errorMessage", ERROR_USER_MESSAGE);
         } else {
             userService.userSave(userForm, incUser, form);
@@ -73,9 +80,10 @@ public class UserController {
         return "redirect:/userlist";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/user", params = {"delete"})
     public String userDelete(@RequestParam("userPhone") User user, RedirectAttributes redirectAttributes) {
-        if(user == null) {
+        if (user == null) {
             redirectAttributes.addFlashAttribute("errorMessage", ERROR_USER_MESSAGE);
             return "redirect:/userlist";
         } else {

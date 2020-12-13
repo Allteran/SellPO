@@ -33,6 +33,7 @@
                 </li>
             </#if>
         </ul>
+        <div class="navbar-text mr-3"><a href="#">${username}</a></div>
         <form class="form-inline my-2 my-lg-0" action="/logout" method="post">
             <input type="hidden" name="_csrf" value="${_csrf.token}">
             <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Выход</button>

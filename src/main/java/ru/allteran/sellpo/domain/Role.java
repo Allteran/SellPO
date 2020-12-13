@@ -2,9 +2,10 @@ package ru.allteran.sellpo.domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
 
 @Document
-public class Role {
+public class Role implements GrantedAuthority {
     public static final long ID_USER = 8737;
     public static final long ID_ADMIN = 23646;
     public static final long ID_MANAGER = 6262337;
@@ -13,7 +14,8 @@ public class Role {
     private long id;
     private String name;
 
-    public Role () {}
+    public Role() {
+    }
 
     public Role(long id, String name) {
         this.id = id;
@@ -34,5 +36,10 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String getAuthority() {
+        return name;
     }
 }

@@ -3,28 +3,23 @@ package ru.allteran.sellpo.domain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import java.util.Collection;
 import java.util.Set;
 
 @Document
-public class User {
+public class User implements UserDetails {
     @Id
-//    @NotBlank(message = "79XXXXXXXXX")
-//    @Size(min = 11, max = 11, message = "79XXXXXXXXX")
     private String phone;
-
-    //    @Size(min = 8, max = 32, message = "Длинна пароля от 8-ми до 32-х символов")
     private String password;
+
     @Transient
     private String passwordConfirm;
 
-    //    @NotBlank(message = "Заполните имя")
     private String firstName;
 
-    //    @NotBlank(message = "Заполните фамилию")
     private String lastName;
     private Dealer dealer;
     private boolean active;
@@ -43,7 +38,7 @@ public class User {
         return false;
     }
 
-    public String getFullname() {
+    public String getFullName() {
         return firstName + " " + lastName;
     }
 
@@ -55,8 +50,39 @@ public class User {
         this.phone = phone;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles();
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return phone;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        //TODO: rewrite it to return isActive
+        return true;
     }
 
     public void setPassword(String password) {
