@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 
 @Document
-public class Role implements GrantedAuthority {
+public class Role implements GrantedAuthority{
     public static final long ID_USER = 8737;
     public static final long ID_ADMIN = 23646;
     public static final long ID_MANAGER = 6262337;

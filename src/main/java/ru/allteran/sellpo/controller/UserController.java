@@ -34,7 +34,6 @@ public class UserController {
     @Autowired
     private RoleRepository rolesRepo;
 
-    @PreAuthorize("hasRole('admin')")
     @GetMapping("/userlist")
     public String userList(Model model) {
         List<User> users = userService.findAll();
@@ -43,9 +42,7 @@ public class UserController {
         return "userList";
     }
 
-    //TODO: @PReAuthorize not working with real ADMIN user
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/user/{user}")
+    @GetMapping("/edit/{user}")
     public String userEditForm(@PathVariable User user, Model model) {
         Set<Role> roles = new HashSet<>(rolesRepo.findAll());
         model.addAttribute("roles", roles);
@@ -54,8 +51,7 @@ public class UserController {
         return "userEdit";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(value = "/user", params = {"save"})
+    @PostMapping(value = "/edit", params = {"save"})
     public String userSave(
             @Valid User userForm, @RequestParam("userPhone") User incUser,
             @RequestParam Map<String, String> form, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
@@ -80,8 +76,7 @@ public class UserController {
         return "redirect:/userlist";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping(value = "/user", params = {"delete"})
+    @PostMapping(value = "/edit", params = {"delete"})
     public String userDelete(@RequestParam("userPhone") User user, RedirectAttributes redirectAttributes) {
         if (user == null) {
             redirectAttributes.addFlashAttribute("errorMessage", ERROR_USER_MESSAGE);

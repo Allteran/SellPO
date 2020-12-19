@@ -1,6 +1,6 @@
 <#import "parts/common.ftlh" as common>
 <@common.page>
-    <form action="/user" method="post" name="userForm" class="form-signin m-3">
+    <form action="/edit" method="post" name="userForm" class="form-signin m-3">
         <input type="hidden" name="userPhone" value="${user.phone}"/>
         <div class="form-row">
             <div class="form-group col-md-6">
