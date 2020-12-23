@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.allteran.sellpo.domain.User;
+import ru.allteran.sellpo.repo.DealerRepository;
 import ru.allteran.sellpo.service.UserService;
 import ru.allteran.sellpo.service.UserValidator;
 
@@ -18,8 +19,9 @@ import java.util.Map;
 @Controller
 public class RegistrationController {
     public static final String SUCCESS_REGISTRATION_MESSAGE = "Регистрация завершена";
-    private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
     private static final String LOGIN_ERROR_MESSAGE = "Неверное имя пользователя или пароль";
+    @Autowired
+    private DealerRepository dealerRepo;
 
     @Autowired
     private UserValidator userValidator;
@@ -27,7 +29,8 @@ public class RegistrationController {
     private UserService userService;
 
     @GetMapping("/registration")
-    public String registration() {
+    public String registration(Model model) {
+        model.addAttribute("dealers", dealerRepo.findAll());
         return "registration";
     }
 

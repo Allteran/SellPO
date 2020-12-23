@@ -31,10 +31,6 @@
             margin: 0 auto;
         }
 
-        .form-signin .checkbox {
-            font-weight: 400;
-        }
-
         .form-signin .form-control {
             position: relative;
             box-sizing: border-box;
@@ -51,6 +47,10 @@
             margin-bottom: -1px;
             border-bottom-right-radius: 0;
             border-bottom-left-radius: 0;
+        }
+
+        #inputDealer {
+            margin: 15px 0px -1px;
         }
 
         .form-signin input[type="password"] {
@@ -124,6 +124,18 @@
             ${passwordConfirmError}
         </#if>
     </div>
+    <label for="inputDealer" class="sr-only">Ваш дилер</label>
+    <select class="custom-select" name="dealer" id="inputDealer">
+        <#list dealers as dealer>
+            <option value="${dealer.id}">${dealer.name}</option>
+        </#list>
+    </select>
+    <div class="text-left invalid-feedback m-1 ml-11">
+        <#if (dealerError)?? >
+            ${dealerError}
+        </#if>
+    </div>
+
     <div class="mb-3"></div>
     <input type="hidden" name="_csrf" value="${_csrf.token}">
     <button class="btn btn-lg btn-primary btn-block" type="submit">Зарегистрироваться</button>

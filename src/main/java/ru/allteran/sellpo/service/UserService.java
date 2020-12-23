@@ -9,8 +9,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import ru.allteran.sellpo.domain.Dealer;
 import ru.allteran.sellpo.domain.Role;
 import ru.allteran.sellpo.domain.User;
+import ru.allteran.sellpo.repo.DealerRepository;
 import ru.allteran.sellpo.repo.RoleRepository;
 import ru.allteran.sellpo.repo.UserRepository;
 
@@ -25,6 +27,9 @@ public class UserService implements UserDetailsService {
     private RoleRepository roleRepo;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private DealerRepository dealerRepo;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {

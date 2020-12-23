@@ -1,7 +1,7 @@
 <#include "security.ftlh">
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">SellPO</a>
+    <a class="navbar-brand" href="/">SellPO</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -33,7 +33,7 @@
                 </li>
             </#if>
         </ul>
-        <div class="navbar-text mr-3"><a href="#">${username}</a></div>
+        <div class="navbar-text mr-3"><a href="/profile/${username}">${username}</a></div>
         <form class="form-inline my-2 my-lg-0" action="/logout" method="post">
             <input type="hidden" name="_csrf" value="${_csrf.token}">
             <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Выход</button>

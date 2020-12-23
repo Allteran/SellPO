@@ -1,18 +1,18 @@
 package ru.allteran.sellpo.domain;
 
 public class PointOfSales {
-    private int dealerId;
+    private String dealerId;
 
     private int id;
     private String city;
     private String street;
     private int buildingNumber;
 
-    public int getDealerId() {
+    public String getDealerId() {
         return dealerId;
     }
 
-    public void setDealerId(int dealerId) {
+    public void setDealerId(String dealerId) {
         this.dealerId = dealerId;
     }
 
