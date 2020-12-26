@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface DealerRepository extends MongoRepository<Dealer, String> {
     List<Dealer> findAll();
-    Dealer findDealerById(String id);
+    Dealer findFirstById(String id);
 }

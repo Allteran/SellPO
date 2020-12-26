@@ -1,8 +1,6 @@
 package ru.allteran.sellpo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,7 +14,6 @@ import ru.allteran.sellpo.repo.DealerRepository;
 import ru.allteran.sellpo.repo.RoleRepository;
 import ru.allteran.sellpo.repo.UserRepository;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Service
@@ -41,13 +38,25 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    public void addUser(User user) {
+    public void addUser(User user, Map<String, String> form) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Set<Role> defaultRole = new HashSet<>();
         defaultRole.add(roleRepo.findFirstById(Role.ID_USER));
 
         user.setRoles(defaultRole);
+
+        Dealer defaultDealer = new Dealer(Dealer.ID_DEFAULT_DEALER, Dealer.NAME_DEFAULT_DEALER);
+        for (String dealerId : form.values()) {
+            Dealer dealer = dealerRepo.findFirstById(dealerId);
+            if (dealer != null) {
+                user.setDealer(dealer);
+                break;
+            } else {
+                user.setDealer(defaultDealer);
+            }
+        }
+
         userRepo.save(user);
     }
 
@@ -101,6 +110,14 @@ public class UserService implements UserDetailsService {
         for (String key : form.keySet()) {
             if (key.equals("radioActive")) {
                 editedUser.setActive(true);
+            }
+        }
+
+        for(String dealerId : form.values()) {
+            Dealer dealer = dealerRepo.findFirstById(dealerId);
+            if(dealer !=null) {
+                editedUser.setDealer(dealer);
+                break;
             }
         }
 

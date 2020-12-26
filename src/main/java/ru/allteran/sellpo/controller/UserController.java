@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.allteran.sellpo.domain.Dealer;
 import ru.allteran.sellpo.domain.Role;
 import ru.allteran.sellpo.domain.User;
+import ru.allteran.sellpo.repo.DealerRepository;
 import ru.allteran.sellpo.repo.RoleRepository;
 import ru.allteran.sellpo.service.UserEditValidator;
 import ru.allteran.sellpo.service.UserService;
@@ -33,6 +35,9 @@ public class UserController {
     private UserEditValidator userEditValidator;
     @Autowired
     private RoleRepository rolesRepo;
+    @Autowired
+    private DealerRepository dealerRepo;
+
 
     @GetMapping("/userlist")
     public String userList(Model model) {
@@ -45,8 +50,10 @@ public class UserController {
     @GetMapping("/edit/{user}")
     public String userEditForm(@PathVariable User user, Model model) {
         Set<Role> roles = new HashSet<>(rolesRepo.findAll());
+        List<Dealer> dealers = dealerRepo.findAll();
         model.addAttribute("roles", roles);
         model.addAttribute("user", user);
+        model.addAttribute("dealers", dealers);
         model.addAttribute("userPhone", user.getPhone());
         return "userEdit";
     }

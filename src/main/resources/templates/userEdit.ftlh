@@ -63,7 +63,15 @@
                     <label class="form-check-label" for="radioInactive">Не активен</label>
                 </div>
             </div>
-        </div>
+            <div class="form-group col-md-2">
+                <label for="inputDealer">Дилер</label>
+                <select class="custom-select" id="inputDealer" name="dealer">
+                    <#list dealers as dealer>
+                        <option value="${dealer.id}" <#if dealer.id == user.dealer.id> selected</#if>>${dealer.name}</option>
+                    </#list>
+                </select>
+                </div>
+            </div>
         <div class="form-row">
             <input type="hidden" name="_csrf" value="${_csrf.token}">
             <div class="form-group col-md-6">

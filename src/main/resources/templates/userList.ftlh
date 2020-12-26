@@ -17,6 +17,7 @@
                 <th scope="col">Номер телефона</th>
                 <th scope="col">Имя</th>
                 <th scope="col">Права</th>
+                <th scope="col">Дилер</th>
                 <th scope="col">Статус</th>
             </tr>
             </thead>
@@ -26,6 +27,7 @@
                     <td><a href="/edit/${user.phone}">${user.phone}</a></td>
                     <td>${user.firstName} ${user.lastName}</td>
                     <td><#if user.roles??><#list user.roles as role>${role.name}<#sep>, </#list></#if> </td>
+                    <td><#if user.dealer??>${user.dealer.name}</#if></td>
                     <td><#if user.active>Активен<#else>Не активен</#if></td>
                 </tr>
             </#list>

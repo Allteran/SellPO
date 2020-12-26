@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.allteran.sellpo.domain.User;
 import ru.allteran.sellpo.repo.DealerRepository;
@@ -35,7 +36,8 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String userRegistration(User userForm, BindingResult bindingResult, Model model,
+    public String userRegistration(@RequestParam Map<String, String> form,
+                                   User userForm, BindingResult bindingResult, Model model,
                                    RedirectAttributes redirectAttributes) {
         userValidator.validate(userForm, bindingResult);
 
@@ -44,7 +46,7 @@ public class RegistrationController {
             model.mergeAttributes(errors);
             return "registration";
         }
-        userService.addUser(userForm);
+        userService.addUser(userForm, form);
 
         redirectAttributes.addFlashAttribute("alertMessage", SUCCESS_REGISTRATION_MESSAGE);
         return "redirect:/login";

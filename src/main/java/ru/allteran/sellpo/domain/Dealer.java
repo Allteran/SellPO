@@ -5,6 +5,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class Dealer {
+    public static final String ID_DEFAULT_DEALER = "default_dealer";
+    public static final String NAME_DEFAULT_DEALER = "DEFAULT_DEALER";
+
     @Id
     private String id;
     private String name;
