@@ -1,7 +1,5 @@
 package ru.allteran.sellpo.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.allteran.sellpo.domain.User;
 import ru.allteran.sellpo.repo.DealerRepository;
 import ru.allteran.sellpo.service.UserService;
-import ru.allteran.sellpo.service.UserValidator;
+import ru.allteran.sellpo.service.UserRegistrationValidator;
 
 import java.util.Map;
 
@@ -25,7 +23,7 @@ public class RegistrationController {
     private DealerRepository dealerRepo;
 
     @Autowired
-    private UserValidator userValidator;
+    private UserRegistrationValidator userRegistrationValidator;
     @Autowired
     private UserService userService;
 
@@ -39,11 +37,12 @@ public class RegistrationController {
     public String userRegistration(@RequestParam Map<String, String> form,
                                    User userForm, BindingResult bindingResult, Model model,
                                    RedirectAttributes redirectAttributes) {
-        userValidator.validate(userForm, bindingResult);
+        userRegistrationValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = ControllerUtils.getFieldErrors(bindingResult);
             model.mergeAttributes(errors);
+            model.addAttribute("dealers", dealerRepo.findAll());
             return "registration";
         }
         userService.addUser(userForm, form);

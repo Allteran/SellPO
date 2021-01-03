@@ -1,5 +1,9 @@
 package ru.allteran.sellpo.service;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -73,7 +77,7 @@ public class UserService implements UserDetailsService {
      * @param userConfirm - represents User before edit. It stores all incoming data. When we gonna update user in DB
      *                    we should compare editedUser with userConfirm to check if we have changed any of fields
      */
-    public void userSave(User editedUser, User userConfirm, Map<String, String> form) {
+    public void saveUser(User editedUser, User userConfirm, Map<String, String> form) {
         if (StringUtils.isEmpty(editedUser.getFirstName())) {
             editedUser.setFirstName(userConfirm.getFirstName());
         }
@@ -113,23 +117,44 @@ public class UserService implements UserDetailsService {
             }
         }
 
-        for(String dealerId : form.values()) {
+        for (String dealerId : form.values()) {
             Dealer dealer = dealerRepo.findFirstById(dealerId);
-            if(dealer !=null) {
+            if (dealer != null) {
                 editedUser.setDealer(dealer);
                 break;
             }
         }
 
-        if (!editedUser.getPassword().equals(userConfirm.getPhone())) {
-            userRepo.delete(userConfirm);
-        }
+        userRepo.delete(userConfirm);
         userRepo.save(editedUser);
     }
 
     public void deleteUser(String phone) {
         User userToDelete = userRepo.findByPhone(phone);
         userRepo.delete(userToDelete);
+    }
+
+    public void updateProfile(User userEdit, User userConfirm) {
+//        BasicDBObject updateFields = new BasicDBObject();
+        if (StringUtils.isEmpty(userEdit.getPhone())) {
+            userEdit.setPhone(userConfirm.getPhone());
+//            updateFields.append("_id",userEdit.getPhone());
+        }
+
+        if (StringUtils.isEmpty(userEdit.getPassword())) {
+            userEdit.setPhone(userConfirm.getPassword());
+//            updateFields.append("password", passwordEncoder.encode(userEdit.getPassword()));
+        } else {
+            userEdit.setPassword(passwordEncoder.encode(userEdit.getPassword()));
+        }
+//        BasicDBObject setQuery = new BasicDBObject();
+//        setQuery.append("$set", updateFields);
+//        BasicDBObject searchQuery = new BasicDBObject("_id", userConfirm.getPhone());
+//
+//        MongoDatabase mongoDb = MongoClients.create().getDatabase("sellPO");
+        userRepo.delete(userConfirm);
+        userRepo.save(userEdit);
+
     }
 
 

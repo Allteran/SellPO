@@ -10,9 +10,14 @@ public class Role implements GrantedAuthority{
     public static final long ID_ADMIN = 23646;
     public static final long ID_MANAGER = 6262337;
 
+    public static final String NAME_DISPLAY_MANAGER = "Управляющий менеджер дилера";
+    public static final String NAME_DISPLAY_USER = "Менеджер по продажам";
+    public static final String NAME_DISPLAY_ADMIN="Администратор системы";
+
     @Id
     private long id;
     private String name;
+    private String displayName;
 
     public Role() {
     }
@@ -20,6 +25,14 @@ public class Role implements GrantedAuthority{
     public Role(long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public long getId() {

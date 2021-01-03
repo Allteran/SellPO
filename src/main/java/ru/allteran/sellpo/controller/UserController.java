@@ -1,7 +1,8 @@
 package ru.allteran.sellpo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +17,7 @@ import ru.allteran.sellpo.domain.User;
 import ru.allteran.sellpo.repo.DealerRepository;
 import ru.allteran.sellpo.repo.RoleRepository;
 import ru.allteran.sellpo.service.UserEditValidator;
+import ru.allteran.sellpo.service.UserProfileValidator;
 import ru.allteran.sellpo.service.UserService;
 
 import javax.validation.Valid;
@@ -32,12 +34,14 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    private UserEditValidator userEditValidator;
-    @Autowired
     private RoleRepository rolesRepo;
     @Autowired
     private DealerRepository dealerRepo;
 
+    @Autowired
+    private UserEditValidator userEditValidator;
+    @Autowired
+    private UserProfileValidator profileValidator;
 
     @GetMapping("/userlist")
     public String userList(Model model) {
@@ -62,7 +66,6 @@ public class UserController {
     public String userSave(
             @Valid User userForm, @RequestParam("userPhone") User incUser,
             @RequestParam Map<String, String> form, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
-        //TODO: use userValidator to validate all fields
         userEditValidator.validate(userForm, bindingResult);
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = ControllerUtils.getFieldErrors(bindingResult);
@@ -77,7 +80,7 @@ public class UserController {
         if (incUser == null) {
             redirectAttributes.addFlashAttribute("errorMessage", ERROR_USER_MESSAGE);
         } else {
-            userService.userSave(userForm, incUser, form);
+            userService.saveUser(userForm, incUser, form);
             redirectAttributes.addFlashAttribute("successMessage", SUCCESS_SAVING_USER_MESSAGE);
         }
         return "redirect:/userlist";
@@ -94,6 +97,29 @@ public class UserController {
         }
         System.out.println("user deleted");
         return "redirect:/userlist";
+    }
+
+    @GetMapping("/profile")
+    public String userProfileForm(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        model.addAttribute("user", user);
+        return "profile";
+    }
+
+    @PostMapping("/profile")
+    public String updateProfile(@Valid User userForm,
+                                @RequestParam("userPhone") User incUser,
+                                BindingResult bindingResult,Model model) {
+        profileValidator.validate(userForm, bindingResult);
+        if(bindingResult.hasErrors()) {
+            Map<String, String> errors = ControllerUtils.getFieldErrors(bindingResult);
+            model.mergeAttributes(errors);
+            return "profile";
+        }
+        userService.updateProfile(userForm, incUser);
+        System.out.println("User updated successful");
+        return "profile";
     }
 
 }

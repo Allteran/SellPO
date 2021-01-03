@@ -9,21 +9,21 @@ import org.springframework.validation.Validator;
 import ru.allteran.sellpo.domain.User;
 
 @Component
-public class UserEditValidator implements Validator {
+public class UserProfileValidator implements Validator {
     @Autowired
     private UserService userService;
 
-    @Value("${validator.phone}")
-    private String phoneMessage;
-
-    @Value("${validator.phoneExist}")
-    private String phoneExistMessage;
+    @Value("${validator.passwordConfirm}")
+    private String passwordConfirmMessage;
 
     @Value("${validator.passwordLength}")
     private String passwordLengthMessage;
 
-    @Value("${validator.passwordConfirm}")
-    private String passwordConfirmMessage;
+    @Value("${validator.phoneExist}")
+    private String phoneExistMessage;
+
+    @Value("${validator.phone}")
+    private String phoneMessage;
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -59,11 +59,9 @@ public class UserEditValidator implements Validator {
                 errors.rejectValue("password", passwordLengthMessage);
             }
 
-            if (user.getPasswordConfirm().equals(user.getPassword())) {
+            if (!user.getPassword().equals(user.getPasswordConfirm())) {
                 errors.rejectValue("passwordConfirm", passwordConfirmMessage);
             }
         }
-
-
     }
 }
