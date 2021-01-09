@@ -51,10 +51,11 @@ public class UserController {
         return "userList";
     }
 
-    @GetMapping("/edit/{user}")
-    public String userEditForm(@PathVariable User user, Model model) {
+    @GetMapping("/edit/{phone}")
+    public String userEditForm(@PathVariable String phone, Model model) {
         Set<Role> roles = new HashSet<>(rolesRepo.findAll());
         List<Dealer> dealers = dealerRepo.findAll();
+        User user = userService.findByPhone(phone);
         model.addAttribute("roles", roles);
         model.addAttribute("user", user);
         model.addAttribute("dealers", dealers);
@@ -64,9 +65,10 @@ public class UserController {
 
     @PostMapping(value = "/edit", params = {"save"})
     public String userSave(
-            @Valid User userForm, @RequestParam("userPhone") User incUser,
+            @Valid User userForm, @RequestParam("userPhone") String incUserPhone,
             @RequestParam Map<String, String> form, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
         userEditValidator.validate(userForm, bindingResult);
+        User incUser = userService.findByPhone(incUserPhone);
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = ControllerUtils.getFieldErrors(bindingResult);
             Set<Role> roles = new HashSet<>(rolesRepo.findAll());
@@ -87,7 +89,8 @@ public class UserController {
     }
 
     @PostMapping(value = "/edit", params = {"delete"})
-    public String userDelete(@RequestParam("userPhone") User user, RedirectAttributes redirectAttributes) {
+    public String userDelete(@RequestParam("userPhone") String userPhone, RedirectAttributes redirectAttributes) {
+        User user = userService.findByPhone(userPhone);
         if (user == null) {
             redirectAttributes.addFlashAttribute("errorMessage", ERROR_USER_MESSAGE);
             return "redirect:/userlist";
@@ -109,16 +112,21 @@ public class UserController {
 
     @PostMapping("/profile")
     public String updateProfile(@Valid User userForm,
-                                @RequestParam("userPhone") User incUser,
-                                BindingResult bindingResult,Model model) {
+                                @RequestParam("userPhone") String incUserPhone,
+                                BindingResult bindingResult, Model model) {
+        User incUser = userService.findByPhone(incUserPhone);
         profileValidator.validate(userForm, bindingResult);
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             Map<String, String> errors = ControllerUtils.getFieldErrors(bindingResult);
+            model.addAttribute("user", incUser);
             model.mergeAttributes(errors);
             return "profile";
         }
-        userService.updateProfile(userForm, incUser);
+        User updatedUser = userService.updateProfile(userForm, incUser);
+        model.addAttribute("user", updatedUser);
+        model.addAttribute("successMessage", SUCCESS_SAVING_USER_MESSAGE);
         System.out.println("User updated successful");
+
         return "profile";
     }
 

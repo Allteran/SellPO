@@ -47,10 +47,10 @@ public class UserProfileValidator implements Validator {
              * {9} - means that it gonna be only 9 number of digits, no more or less
              */
             if (!user.getPhone().matches("\\^?(79)\\d{9}")) {
-                errors.rejectValue("phone", phoneMessage);
+                errors.rejectValue("phone", "wrongFormOrSize");
             }
             if (userService.findByPhone(user.getPhone()) != null) {
-                errors.rejectValue("phone", phoneExistMessage);
+                errors.rejectValue("phone", "phoneExistWow");
             }
         }
 

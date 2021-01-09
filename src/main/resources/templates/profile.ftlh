@@ -1,5 +1,10 @@
 <#import "parts/common.ftlh" as common>
 <@common.page>
+    <#if (successMessage)??>
+        <div class="alert alert-success" role="alert">
+            ${successMessage}
+        </div>
+    </#if>
     <form action="/profile" method="post" name="userForm" class="form-signin m-3">
         <input type="hidden" name="userPhone" value="${user.phone}"/>
         <div class="form-row">
