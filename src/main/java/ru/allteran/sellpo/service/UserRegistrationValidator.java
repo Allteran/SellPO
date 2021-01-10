@@ -15,8 +15,10 @@ public class UserRegistrationValidator implements Validator {
 
     @Value("${validator.empty}")
     private String emptyMessage;
+
     @Value("${validator.phone}")
     private String phoneMessage;
+
     @Value("${validator.phoneExist}")
     private String phoneExistMessage;
     @Value("${validator.passwordConfirm}")
