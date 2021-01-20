@@ -81,19 +81,31 @@ public class UserService implements UserDetailsService {
      *                    we should compare editedUser with userConfirm to check if we have changed any of fields
      */
     public void saveUser(User editedUser, User userConfirm, Map<String, String> form) {
+        BasicDBObject updateFields = new BasicDBObject();
         if (StringUtils.isEmpty(editedUser.getFirstName())) {
             editedUser.setFirstName(userConfirm.getFirstName());
+        } else {
+            updateFields.append("firstName", editedUser.getFirstName());
         }
+
         if (StringUtils.isEmpty(editedUser.getLastName())) {
             editedUser.setLastName(userConfirm.getLastName());
+        } else {
+            updateFields.append("lastName", editedUser.getLastName());
         }
+
         if (StringUtils.isEmpty(editedUser.getPhone())) {
             editedUser.setPhone(userConfirm.getPhone());
+        } else {
+            updateFields.append("phone", editedUser.getPhone());
         }
+
         if (StringUtils.isEmpty(editedUser.getPassword())) {
             editedUser.setPassword(userConfirm.getPassword());
         } else {
-            editedUser.setPassword(passwordEncoder.encode(editedUser.getPassword()));
+            String encodedPassword = passwordEncoder.encode(editedUser.getPassword());
+            editedUser.setPassword(encodedPassword);
+            updateFields.append("password", encodedPassword);
         }
 
         if (editedUser.getRoles() == null) {
@@ -112,13 +124,19 @@ public class UserService implements UserDetailsService {
                 }
             }
         }
+        updateFields.append("roles", editedUser.getRoles());
+
 
         editedUser.setActive(false);
+        boolean isActive = false;
         for (String key : form.keySet()) {
             if (key.equals("radioActive")) {
+                isActive = true;
                 editedUser.setActive(true);
             }
         }
+
+        updateFields.append("active", isActive);
 
         for (String dealerId : form.values()) {
             Dealer dealer = dealerRepo.findFirstById(dealerId);
@@ -128,8 +146,20 @@ public class UserService implements UserDetailsService {
             }
         }
 
-        userRepo.delete(userConfirm);
-        userRepo.save(editedUser);
+        /**
+         * TODO: YOU HAVE TO TEST NEXT LINES IF IT WORKS PROPERLY
+         * AND TEST IF THERE ANY ERRORS
+         */
+
+        updateFields.append("dealer", editedUser.getDealer());
+        BasicDBObject setQuery = new BasicDBObject();
+        setQuery.append("$set", updateFields);
+        BasicDBObject searchQuery = new BasicDBObject("phone", userConfirm.getPhone());
+
+        MongoDatabase mongoDb = MongoClients.create().getDatabase("sellPO");
+        MongoCollection<Document> collection = mongoDb.getCollection("user");
+        collection.updateOne(searchQuery, setQuery);
+
     }
 
     public void deleteUser(String phone) {
@@ -140,7 +170,7 @@ public class UserService implements UserDetailsService {
     public User updateProfile(User userEdit, User userConfirm) {
         BasicDBObject updateFields = new BasicDBObject();
         if (!StringUtils.isEmpty(userEdit.getPhone())) {
-            updateFields.append("phone",userEdit.getPhone());
+            updateFields.append("phone", userEdit.getPhone());
         } else {
             userEdit.setPhone(userConfirm.getPhone());
         }
@@ -150,13 +180,15 @@ public class UserService implements UserDetailsService {
         } else {
             userEdit.setPassword(userConfirm.getPassword());
         }
-        BasicDBObject setQuery = new BasicDBObject();
-        setQuery.append("$set", updateFields);
-        BasicDBObject searchQuery = new BasicDBObject("phone", userConfirm.getPhone());
+        if (!updateFields.isEmpty()) {
+            BasicDBObject setQuery = new BasicDBObject();
+            setQuery.append("$set", updateFields);
+            BasicDBObject searchQuery = new BasicDBObject("phone", userConfirm.getPhone());
 
-        MongoDatabase mongoDb = MongoClients.create().getDatabase("sellPO");
-        MongoCollection<Document> collection = mongoDb.getCollection("user");
-        collection.updateOne(searchQuery,setQuery);
+            MongoDatabase mongoDb = MongoClients.create().getDatabase("sellPO");
+            MongoCollection<Document> collection = mongoDb.getCollection("user");
+            collection.updateOne(searchQuery, setQuery);
+        }
 
         userEdit.setId(userConfirm.getId());
         userEdit.setDealer(userConfirm.getDealer());
