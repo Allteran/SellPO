@@ -53,12 +53,12 @@
             <div class="form-group col-md-2">
                 <label>Статус пользователя</label>
                 <div class="form-check">
-                    <input class="form-check-input" name="radioActive" type="radio" id="radioActive"
+                    <input class="form-check-input" name="radioActive" type="radio" id="radioActive" value = "active"
                            <#if user.active>checked</#if>>
                     <label class="form-check-label" for="radioActive">Активен</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" name="radioActive" type="radio" id="radioInactive"
+                    <input class="form-check-input" name="radioActive" type="radio" id="radioInactive" value="inactive"
                            <#if !(user.active)>checked</#if>>
                     <label class="form-check-label" for="radioInactive">Не активен</label>
                 </div>

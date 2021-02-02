@@ -5,14 +5,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 
 @Document
-public class Role implements GrantedAuthority{
+public class Role implements GrantedAuthority {
     public static final long ID_USER = 8737;
     public static final long ID_ADMIN = 23646;
     public static final long ID_MANAGER = 6262337;
 
     public static final String NAME_DISPLAY_MANAGER = "Управляющий менеджер дилера";
     public static final String NAME_DISPLAY_USER = "Менеджер по продажам";
-    public static final String NAME_DISPLAY_ADMIN="Администратор системы";
+    public static final String NAME_DISPLAY_ADMIN = "Администратор системы";
 
     @Id
     private long id;
@@ -25,6 +25,14 @@ public class Role implements GrantedAuthority{
     public Role(long id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public static org.bson.Document roleToDocument(Role role) {
+        org.bson.Document roleDoc = new org.bson.Document();
+        roleDoc.put("_id", role.getId());
+        roleDoc.put("name", role.getName());
+        roleDoc.put("displayName", role.getDisplayName());
+        return roleDoc;
     }
 
     public String getDisplayName() {

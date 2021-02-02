@@ -20,6 +20,13 @@ public class Dealer {
     public Dealer() {
     }
 
+    public static org.bson.Document dealerToDocument(Dealer dealer) {
+        org.bson.Document dealerDoc = new org.bson.Document();
+        dealerDoc.put("_id", dealer.getId());
+        dealerDoc.put("name", dealer.getName());
+        return dealerDoc;
+    }
+
     public String getId() {
         return id;
     }

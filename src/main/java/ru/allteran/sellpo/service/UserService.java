@@ -1,7 +1,6 @@
 package ru.allteran.sellpo.service;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -24,6 +23,7 @@ import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
+    private static final String ACTIVE_STATUS_USER = "active";
     @Autowired
     private UserRepository userRepo;
     @Autowired
@@ -124,15 +124,26 @@ public class UserService implements UserDetailsService {
                 }
             }
         }
-        updateFields.append("roles", editedUser.getRoles());
+        List<Document> rolesDoc = new ArrayList<>();
+        for (Role role : editedUser.getRoles()) {
+            rolesDoc.add(Role.roleToDocument(role));
+        }
+        updateFields.append("roles", rolesDoc);
 
 
         editedUser.setActive(false);
         boolean isActive = false;
         for (String key : form.keySet()) {
             if (key.equals("radioActive")) {
-                isActive = true;
-                editedUser.setActive(true);
+                for (String value : form.values()) {
+                    if (value.equals(ACTIVE_STATUS_USER)) {
+                        isActive = true;
+                        editedUser.setActive(true);
+                    } else {
+                        isActive = false;
+                        editedUser.setActive(false);
+                    }
+                }
             }
         }
 
@@ -145,13 +156,14 @@ public class UserService implements UserDetailsService {
                 break;
             }
         }
+        Document dealerDoc = Dealer.dealerToDocument(editedUser.getDealer());
+        updateFields.append("dealer", dealerDoc);
 
         /**
          * TODO: YOU HAVE TO TEST NEXT LINES IF IT WORKS PROPERLY
          * AND TEST IF THERE ANY ERRORS
          */
 
-        updateFields.append("dealer", editedUser.getDealer());
         BasicDBObject setQuery = new BasicDBObject();
         setQuery.append("$set", updateFields);
         BasicDBObject searchQuery = new BasicDBObject("phone", userConfirm.getPhone());
