@@ -133,17 +133,11 @@ public class UserService implements UserDetailsService {
 
         editedUser.setActive(false);
         boolean isActive = false;
-        for (String key : form.keySet()) {
-            if (key.equals("radioActive")) {
-                for (String value : form.values()) {
-                    if (value.equals(ACTIVE_STATUS_USER)) {
-                        isActive = true;
-                        editedUser.setActive(true);
-                    } else {
-                        isActive = false;
-                        editedUser.setActive(false);
-                    }
-                }
+        for (String value : form.values()) {
+            if (value.equals(ACTIVE_STATUS_USER)) {
+                isActive = true;
+                editedUser.setActive(true);
+                break;
             }
         }
 
