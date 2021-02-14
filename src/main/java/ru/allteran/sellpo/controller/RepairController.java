@@ -7,7 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.allteran.sellpo.domain.RepairRequest;
-import ru.allteran.sellpo.service.RepairRequestValidator;
+import ru.allteran.sellpo.validator.RepairRequestValidator;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class RepairController {
         if(bindingResult.hasErrors()) {
             Map<String, String> errors = ControllerUtils.getFieldErrors(bindingResult);
             model.mergeAttributes(errors);
-            //TODO: fill that fields that user already declare and return it into values when it has errors
+            model.addAttribute("requestDraft", repairRequest);
             return "createRepairRequest";
         }
 

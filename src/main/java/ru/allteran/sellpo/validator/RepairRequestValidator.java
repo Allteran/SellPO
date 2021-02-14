@@ -1,4 +1,4 @@
-package ru.allteran.sellpo.service;
+package ru.allteran.sellpo.validator;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -31,8 +31,24 @@ public class RepairRequestValidator implements Validator {
         ValidationUtils.rejectIfEmpty(errors, "clientName", emptyMessage);
         ValidationUtils.rejectIfEmpty(errors, "clientPhone", emptyMessage);
 
-        if(!StringUtils.isEmpty(request.getClientPhone())) {
-            if(request.getClientPhone().length() != 11) {
+        if (!StringUtils.hasText(request.getProductType())) {
+            errors.rejectValue("productType", emptyMessage);
+        }
+        if (!StringUtils.hasText(request.getProductName())) {
+            errors.rejectValue("productName", emptyMessage);
+        }
+        if (!StringUtils.hasText(request.getRequestReason())) {
+            errors.rejectValue("requestReason", emptyMessage);
+        }
+        if (!StringUtils.hasText(request.getEquipSet())) {
+            errors.rejectValue("equipSet", emptyMessage);
+        }
+        if (!StringUtils.hasText(request.getClientName())) {
+            errors.rejectValue("clientName", emptyMessage);
+        }
+
+        if (!StringUtils.isEmpty(request.getClientPhone())) {
+            if (request.getClientPhone().length() != 11) {
                 errors.rejectValue("clientPhone", phoneMessage);
             }
 

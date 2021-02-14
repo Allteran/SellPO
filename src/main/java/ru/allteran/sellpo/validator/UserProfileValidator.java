@@ -1,4 +1,4 @@
-package ru.allteran.sellpo.service;
+package ru.allteran.sellpo.validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,23 +7,24 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.allteran.sellpo.domain.User;
+import ru.allteran.sellpo.service.UserService;
 
 @Component
-public class UserEditValidator implements Validator {
+public class UserProfileValidator implements Validator {
     @Autowired
     private UserService userService;
 
-    @Value("${validator.phone}")
-    private String phoneMessage;
-
-    @Value("${validator.phoneExist}")
-    private String phoneExistMessage;
+    @Value("${validator.passwordConfirm}")
+    private String passwordConfirmMessage;
 
     @Value("${validator.passwordLength}")
     private String passwordLengthMessage;
 
-    @Value("${validator.passwordConfirm}")
-    private String passwordConfirmMessage;
+    @Value("${validator.phoneExist}")
+    private String phoneExistMessage;
+
+    @Value("${validator.phone}")
+    private String phoneMessage;
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -47,10 +48,10 @@ public class UserEditValidator implements Validator {
              * {9} - means that it gonna be only 9 number of digits, no more or less
              */
             if (!user.getPhone().matches("\\^?(79)\\d{9}")) {
-                errors.rejectValue("phone", phoneMessage);
+                errors.rejectValue("phone", "wrongFormOrSize");
             }
             if (userService.findByPhone(user.getPhone()) != null) {
-                errors.rejectValue("phone", phoneExistMessage);
+                errors.rejectValue("phone", "phoneExistWow");
             }
         }
 
@@ -59,11 +60,9 @@ public class UserEditValidator implements Validator {
                 errors.rejectValue("password", passwordLengthMessage);
             }
 
-            if (user.getPasswordConfirm().equals(user.getPassword())) {
+            if (!user.getPassword().equals(user.getPasswordConfirm())) {
                 errors.rejectValue("passwordConfirm", passwordConfirmMessage);
             }
         }
-
-
     }
 }

@@ -16,8 +16,8 @@ import ru.allteran.sellpo.domain.Role;
 import ru.allteran.sellpo.domain.User;
 import ru.allteran.sellpo.repo.DealerRepository;
 import ru.allteran.sellpo.repo.RoleRepository;
-import ru.allteran.sellpo.service.UserEditValidator;
-import ru.allteran.sellpo.service.UserProfileValidator;
+import ru.allteran.sellpo.validator.UserEditValidator;
+import ru.allteran.sellpo.validator.UserProfileValidator;
 import ru.allteran.sellpo.service.UserService;
 
 import javax.validation.Valid;

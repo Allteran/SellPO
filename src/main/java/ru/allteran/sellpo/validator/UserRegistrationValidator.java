@@ -1,4 +1,4 @@
-package ru.allteran.sellpo.service;
+package ru.allteran.sellpo.validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,6 +7,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import ru.allteran.sellpo.domain.User;
+import ru.allteran.sellpo.service.UserService;
 
 @Component
 public class UserRegistrationValidator implements Validator {
