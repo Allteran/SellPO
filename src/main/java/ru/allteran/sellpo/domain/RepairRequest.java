@@ -15,7 +15,7 @@ public class RepairRequest {
     private String sellDate;
     private String repairmanComment;
 
-    private String repairStatus; //status - string const, that describes in app.properties
+    private String status; //status - string const, that describes in app.properties
 
     private long totalPrice;
     private long componentPrice;
@@ -50,12 +50,12 @@ public class RepairRequest {
         this.repairmanComment = repairmanComment;
     }
 
-    public String getRepairStatus() {
-        return repairStatus;
+    public String getStatus() {
+        return status;
     }
 
-    public void setRepairStatus(String repairStatus) {
-        this.repairStatus = repairStatus;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getEquipSet() {

@@ -74,9 +74,15 @@
         </div>
         <div class="form-row">
             <input type="hidden" name="_csrf" value="${_csrf.token}">
-            <button class="btn btn-outline-primary form-control" name="createRequest" type="submit">Принять в
-                ремонт
-            </button>
-        </div>
+            <div class="form-group col-md-6">
+                <button class="btn btn-outline-primary form-control" name="createRequest" type="submit">Принять в
+                    ремонт
+                </button>
+            </div>
+            <div class="form-group col-md-6">
+                <button class="btn btn-outline-secondary form-control" name="generateCertificate" type="submit">
+                    Распечатать акт
+                </button>
+            </div>
     </form>
 </@common.page>

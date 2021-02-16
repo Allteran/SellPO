@@ -6,6 +6,7 @@ import ru.allteran.sellpo.domain.RepairRequest;
 import java.util.List;
 
 public interface RepairRequestRepository extends MongoRepository<RepairRequest, String> {
-    List<RepairRequest> findAll ();
-    //TODO: find requests by status (that is still active)
+    List<RepairRequest> findAll();
+
+    List<RepairRequest> findAllByStatus(String status);
 }
