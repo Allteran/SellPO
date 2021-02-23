@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.allteran.sellpo.domain.RepairRequest;
+import ru.allteran.sellpo.service.ExcelService;
 import ru.allteran.sellpo.service.RepairService;
 import ru.allteran.sellpo.validator.RepairRequestValidator;
 
@@ -21,6 +22,8 @@ public class RepairController {
     private static final String SUCCESS_REQUEST_CREATED = "Заявка успешно создана";
     @Autowired
     private RepairService repairService;
+    @Autowired
+    private ExcelService excelService;
 
     @Autowired
     private RepairRequestValidator requestValidator;
@@ -28,6 +31,13 @@ public class RepairController {
     @GetMapping("/createRepairRequest")
     public String repairRequestForm() {
         return "createRepairRequest";
+    }
+
+    @GetMapping("/repairlist")
+    public String repairRequestList(Model model) {
+        List<RepairRequest> requestList = repairService.findAll();
+        model.addAttribute("requests", requestList);
+        return "repairRequestList";
     }
 
     @PostMapping(value = "/createRepairRequest", params = {"createRequest"})
@@ -56,16 +66,10 @@ public class RepairController {
             Map<String, String> errors = ControllerUtils.getFieldErrors(bindingResult);
             model.mergeAttributes(errors);
             model.addAttribute("requestDraft", repairRequest);
+            return "createRepairRequest";
         }
         //TODO: generate document transfer acceptance certificate in excel or PDF and download it
-        model.addAttribute("requestDraft", repairRequest);
+        excelService.generateAcceptanceCertificate(repairRequest);
         return "createRepairRequest";
-    }
-
-    @GetMapping("/repairlist")
-    public String repairRequestList(Model model) {
-        List<RepairRequest> requestList = repairService.findAll();
-        model.addAttribute("requests", requestList);
-        return "repairRequestList";
     }
 }
