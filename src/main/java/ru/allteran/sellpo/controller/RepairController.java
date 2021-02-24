@@ -1,19 +1,29 @@
 package ru.allteran.sellpo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.allteran.sellpo.domain.PointOfSales;
 import ru.allteran.sellpo.domain.RepairRequest;
+import ru.allteran.sellpo.domain.User;
+import ru.allteran.sellpo.repo.POSRepository;
 import ru.allteran.sellpo.service.ExcelService;
 import ru.allteran.sellpo.service.RepairService;
 import ru.allteran.sellpo.validator.RepairRequestValidator;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.ArrayList;
+import java.io.*;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 
@@ -24,12 +34,16 @@ public class RepairController {
     private RepairService repairService;
     @Autowired
     private ExcelService excelService;
-
     @Autowired
     private RepairRequestValidator requestValidator;
+    @Autowired
+    private POSRepository posRepo;
+
+    private String certificatePath;
 
     @GetMapping("/createRepairRequest")
-    public String repairRequestForm() {
+    public String repairRequestForm(Model model) {
+        model.addAttribute("posList", posRepo.findAll());
         return "createRepairRequest";
     }
 
@@ -42,7 +56,7 @@ public class RepairController {
 
     @PostMapping(value = "/createRepairRequest", params = {"createRequest"})
     public String createRepairRequest(
-            @Valid RepairRequest repairRequest,
+            @Valid RepairRequest repairRequest,@RequestParam Map<String, String> form,
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
         requestValidator.validate(repairRequest, bindingResult);
         if (bindingResult.hasErrors()) {
@@ -51,7 +65,7 @@ public class RepairController {
             model.addAttribute("requestDraft", repairRequest);
             return "createRepairRequest";
         }
-        repairService.createRepairRequest(repairRequest);
+        repairService.createRepairRequest(repairRequest, form);
         redirectAttributes.addFlashAttribute("successMessage", SUCCESS_REQUEST_CREATED);
 
         return "redirect:/repairlist";
@@ -68,8 +82,30 @@ public class RepairController {
             model.addAttribute("requestDraft", repairRequest);
             return "createRepairRequest";
         }
-        //TODO: generate document transfer acceptance certificate in excel or PDF and download it
-        excelService.generateAcceptanceCertificate(repairRequest);
-        return "createRepairRequest";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        certificatePath = excelService.generateAcceptanceCertificate(repairRequest, user);
+        return "redirect:/downloads/xlsx";
+    }
+
+    @GetMapping("/downloads/xlsx")
+    public void downloadCertificate(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
+        File file = new File(certificatePath);
+
+        if (file.exists()) {
+            String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+            if (mimeType == null) {
+                mimeType = "application/octet-stream";
+            }
+
+            httpResponse.setContentType(mimeType);
+
+            httpResponse.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() +
+                    "\""));
+            httpResponse.setContentLength((int) file.length());
+            InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+
+            FileCopyUtils.copy(inputStream, httpResponse.getOutputStream());
+        }
     }
 }

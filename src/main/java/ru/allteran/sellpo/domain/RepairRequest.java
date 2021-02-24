@@ -1,6 +1,7 @@
 package ru.allteran.sellpo.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
@@ -10,8 +11,6 @@ public class RepairRequest {
     private String productName;
     private String productType;
     private String requestDate;
-    private String toRepairmanDate;
-    private String fromRepairmanDate;
     private String sellDate;
     private String repairmanComment;
 
@@ -30,6 +29,7 @@ public class RepairRequest {
     private String requestReason; //as client describes
     private String repairReason; //actual reason from repairman
     private String equipSet; //setting of equip that client gives to seller
+    private String deviceState; // actual state of device if there any scratches or so on
 
     public RepairRequest() {
     }
@@ -66,6 +66,14 @@ public class RepairRequest {
         this.equipSet = equipSet;
     }
 
+    public String getDeviceState() {
+        return deviceState;
+    }
+
+    public void setDeviceState(String deviceState) {
+        this.deviceState = deviceState;
+    }
+
     public String getProductName() {
         return productName;
     }
@@ -88,22 +96,6 @@ public class RepairRequest {
 
     public void setRequestDate(String requestDate) {
         this.requestDate = requestDate;
-    }
-
-    public String getToRepairmanDate() {
-        return toRepairmanDate;
-    }
-
-    public void setToRepairmanDate(String toRepairmanDate) {
-        this.toRepairmanDate = toRepairmanDate;
-    }
-
-    public String getFromRepairmanDate() {
-        return fromRepairmanDate;
-    }
-
-    public void setFromRepairmanDate(String fromRepairmanDate) {
-        this.fromRepairmanDate = fromRepairmanDate;
     }
 
     public String getSellDate() {

@@ -30,6 +30,7 @@ public class RepairRequestValidator implements Validator {
         ValidationUtils.rejectIfEmpty(errors, "equipSet", emptyMessage);
         ValidationUtils.rejectIfEmpty(errors, "clientName", emptyMessage);
         ValidationUtils.rejectIfEmpty(errors, "clientPhone", emptyMessage);
+        ValidationUtils.rejectIfEmpty(errors, "deviceState", emptyMessage);
 
         if (!StringUtils.hasText(request.getProductType())) {
             errors.rejectValue("productType", emptyMessage);
@@ -45,6 +46,10 @@ public class RepairRequestValidator implements Validator {
         }
         if (!StringUtils.hasText(request.getClientName())) {
             errors.rejectValue("clientName", emptyMessage);
+        }
+
+        if (!StringUtils.hasText(request.getDeviceState())) {
+            errors.rejectValue("deviceState", emptyMessage);
         }
 
         if (!StringUtils.isEmpty(request.getClientPhone())) {

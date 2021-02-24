@@ -1,12 +1,24 @@
 package ru.allteran.sellpo.domain;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class PointOfSales {
     private String dealerId;
 
     private int id;
     private String city;
     private String street;
-    private int buildingNumber;
+
+    public PointOfSales() {
+    }
+
+    public PointOfSales(String dealerId, int id, String city, String street) {
+        this.dealerId = dealerId;
+        this.id = id;
+        this.city = city;
+        this.street = street;
+    }
 
     public String getDealerId() {
         return dealerId;
@@ -40,14 +52,6 @@ public class PointOfSales {
         this.street = street;
     }
 
-    public int getBuildingNumber() {
-        return buildingNumber;
-    }
-
-    public void setBuildingNumber(int buildingNumber) {
-        this.buildingNumber = buildingNumber;
-    }
-
     @Override
     public String toString() {
         return "PointOfSales{" +
@@ -55,7 +59,6 @@ public class PointOfSales {
                 ", id=" + id +
                 ", city='" + city + '\'' +
                 ", street='" + street + '\'' +
-                ", buildingNumber=" + buildingNumber +
                 '}';
     }
 }

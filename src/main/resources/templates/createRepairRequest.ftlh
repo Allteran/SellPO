@@ -1,5 +1,10 @@
 <#import "parts/common.ftlh" as common>
 <@common.page>
+    <#if (successMessage)??>
+        <div class="alert alert-success" role="alert">
+            ${successMessage}
+        </div>
+    </#if>
     <form action="/createRepairRequest" method="post" name="repairRequest" class="form-signin m-3">
         <div class="form-row">
             <div class="form-group col-md-6">
@@ -49,6 +54,17 @@
             </div>
         </div>
         <div class="form-row">
+            <label for="inputDeviceState">Состояние устройства</label>
+            <textarea class="form-control ${(deviceStateError??)?string('is-invalid', '')}" id="inputDeviceState"
+                      name="deviceState" rows="3"><#if (requestDraft)??>${requestDraft.deviceState}</#if></textarea>
+            <div class="text-left invalid-feedback m-1 ml-1">
+                <#if (deviceState)??>
+                    ${deviceState}
+                </#if>
+            </div>
+        </div>
+
+        <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="inputClientName">Имя клиента</label>
                 <input type="text" class="form-control ${(clientNameError??)?string('is-invalid', '')}"
@@ -72,6 +88,16 @@
                 </div>
             </div>
         </div>
+        <div class="form-row">
+            <label for="inputPOS">Точка приема</label>
+            <select class="custom-select" id="inputPOS" name="pointOfSales">
+                <#list posList as pos>
+                    <option value="${pos.id}">${pos.id} ${pos.city}, ${pos.street}</option>
+                </#list>
+            </select>
+        </div>
+        <div class="mb-3"></div>
+
         <div class="form-row">
             <input type="hidden" name="_csrf" value="${_csrf.token}">
             <div class="form-group col-md-6">
