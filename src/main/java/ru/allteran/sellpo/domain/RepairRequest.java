@@ -23,7 +23,7 @@ public class RepairRequest {
     private String clientName;
     private String clientPhone;
 
-    private int posId;
+    private String posId;
     private String sellerId;
 
     private String requestReason; //as client describes
@@ -146,11 +146,11 @@ public class RepairRequest {
         this.clientPhone = clientPhone;
     }
 
-    public int getPosId() {
+    public String getPosId() {
         return posId;
     }
 
-    public void setPosId(int posId) {
+    public void setPosId(String posId) {
         this.posId = posId;
     }
 

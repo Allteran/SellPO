@@ -56,25 +56,8 @@ public class RepairController {
 
     @PostMapping(value = "/createRepairRequest", params = {"createRequest"})
     public String createRepairRequest(
-            @Valid RepairRequest repairRequest,@RequestParam Map<String, String> form,
+            @Valid RepairRequest repairRequest, @RequestParam Map<String, String> form,
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
-        requestValidator.validate(repairRequest, bindingResult);
-        if (bindingResult.hasErrors()) {
-            Map<String, String> errors = ControllerUtils.getFieldErrors(bindingResult);
-            model.mergeAttributes(errors);
-            model.addAttribute("requestDraft", repairRequest);
-            return "createRepairRequest";
-        }
-        repairService.createRepairRequest(repairRequest, form);
-        redirectAttributes.addFlashAttribute("successMessage", SUCCESS_REQUEST_CREATED);
-
-        return "redirect:/repairlist";
-    }
-
-    @PostMapping(value = "/createRepairRequest", params = {"generateCertificate"})
-    public String generateCertificate(
-            @Valid RepairRequest repairRequest, BindingResult bindingResult,
-            Model model) {
         requestValidator.validate(repairRequest, bindingResult);
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = ControllerUtils.getFieldErrors(bindingResult);
@@ -84,12 +67,31 @@ public class RepairController {
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) auth.getPrincipal();
-        certificatePath = excelService.generateAcceptanceCertificate(repairRequest, user);
+        repairService.createRepairRequest(repairRequest, user, form);
+        redirectAttributes.addFlashAttribute("successMessage", SUCCESS_REQUEST_CREATED);
+        //TODO: check if it fill right data into Mongo: if fields exist at all (with empty value) or if its not
+        return "redirect:/repairlist";
+    }
+
+    @PostMapping(value = "/createRepairRequest", params = {"generateCertificate"})
+    public String generateCertificate(
+            @Valid RepairRequest repairRequest, @RequestParam Map<String, String> form,
+            BindingResult bindingResult, Model model) {
+        requestValidator.validate(repairRequest, bindingResult);
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = ControllerUtils.getFieldErrors(bindingResult);
+            model.mergeAttributes(errors);
+            model.addAttribute("requestDraft", repairRequest);
+            return "createRepairRequest";
+        }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        certificatePath = excelService.generateAcceptanceCertificate(repairRequest, user, form);
         return "redirect:/downloads/xlsx";
     }
 
     @GetMapping("/downloads/xlsx")
-    public void downloadCertificate(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
+    public void downloadCertificate(HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
         File file = new File(certificatePath);
 
         if (file.exists()) {
@@ -100,12 +102,15 @@ public class RepairController {
 
             httpResponse.setContentType(mimeType);
 
-            httpResponse.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() +
-                    "\""));
+            httpResponse.setHeader("Content-Disposition", "inline; filename=\"" + file.getName() +
+                    "\"");
             httpResponse.setContentLength((int) file.length());
-            InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
-
-            FileCopyUtils.copy(inputStream, httpResponse.getOutputStream());
+            try {
+                InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+                FileCopyUtils.copy(inputStream, httpResponse.getOutputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

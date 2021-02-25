@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface POSRepository extends MongoRepository<PointOfSales, Integer> {
     List<PointOfSales> findAll();
-    PointOfSales findFirstById(int id);
+
+    PointOfSales findFirstById(String id);
 
 }

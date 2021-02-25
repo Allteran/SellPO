@@ -3,16 +3,21 @@ package ru.allteran.sellpo.service;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ru.allteran.sellpo.domain.PointOfSales;
 import ru.allteran.sellpo.domain.RepairRequest;
 import ru.allteran.sellpo.domain.User;
+import ru.allteran.sellpo.repo.POSRepository;
 
 import javax.validation.constraints.NotNull;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class ExcelService {
@@ -20,10 +25,12 @@ public class ExcelService {
     private String headerRowTemplate;
 
     private static final String CERTIFICATE_FILENAME_PREFIX = "CERTIFICATE_";
-
     private static final String XLSX_DEFAULT_DIR = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "downloads" + File.separator;
     private static final String XLSX_TEMPLATE_DIR = "src" + File.separator + "main" + File.separator + "resources" + File.separator + "files" + File.separator;
     private static final String XLSX_TEMPLATE_NAME = "CERTIFICATE_TEMPLATE.xlsx";
+
+    @Autowired
+    private POSRepository posRepo;
 
     /**
      * Next method generate acceptance certificate and fill it with actual client's data
@@ -31,7 +38,7 @@ public class ExcelService {
      * @param request gives us info about request with all that data that we can put in XLSX file
      * @return path to generated certificate so we can give it to downloadMethod
      */
-    public String generateAcceptanceCertificate(@NotNull RepairRequest request, User user) {
+    public String generateAcceptanceCertificate(@NotNull RepairRequest request, User user, Map<String, String> form) {
         File currentDir = new File(".");
         String path = currentDir.getAbsolutePath().substring(0, currentDir.getAbsolutePath().length() - 1) +
                 XLSX_TEMPLATE_DIR + XLSX_TEMPLATE_NAME;
@@ -52,7 +59,17 @@ public class ExcelService {
         String currentDate = dateFormatter.format(new Date());
         headerCell.setCellValue(headerRowTemplate + " " + currentDate);
 
-        //TODO: fill POS with data from request - need to add form to params and find with foreach cycle
+        PointOfSales pos = null;
+        for (String posId : form.values()) {
+             pos = posRepo.findFirstById(posId);
+            if (pos != null) {
+//                request.setPosId(pos.getId());
+                break;
+            }
+        }
+        //set pos name to cell
+        mainSheet.getRow(2).getCell(1).setCellValue(Objects.requireNonNull(pos).getId() + ", " + pos.getCity() + 
+                ", " + pos.getStreet());
 
         //set full name of user to cell
         mainSheet.getRow(4).getCell(2).setCellValue(user.getFullName());

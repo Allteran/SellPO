@@ -1,19 +1,21 @@
 package ru.allteran.sellpo.domain;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class PointOfSales {
     private String dealerId;
 
-    private int id;
+    @Id
+    private String id;
     private String city;
     private String street;
 
     public PointOfSales() {
     }
 
-    public PointOfSales(String dealerId, int id, String city, String street) {
+    public PointOfSales(String dealerId, String id, String city, String street) {
         this.dealerId = dealerId;
         this.id = id;
         this.city = city;
@@ -28,11 +30,11 @@ public class PointOfSales {
         this.dealerId = dealerId;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

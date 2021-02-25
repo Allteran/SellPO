@@ -23,12 +23,12 @@
             <tbody>
             <#list requests as request>
                 <td><a href="/request/${request.id}">${request.id}</a></td>
-                <td><#if request.productType??></#if>${request.productType}</td>
-                <td><#if request.productName??></#if>${request.productName}</td>
-                <td><#if request.repairReason??></#if>${request.repairReason}</td>
-                <td><#if request.totalPrice??></#if>${request.totalPrice} р.</td>
-                <td><#if request.clientName??></#if>${request.clientName}</td>
-                <td><#if request.clientPhone??></#if>${request.clientPhone}</td>
+                <td><#if (request.productType)??></#if>${request.productType}</td>
+                <td><#if (request.productName)??></#if>${request.productName}</td>
+                <td><#if (request.repairReason)??></#if>${request.repairReason}</td>
+                <td><#if (request.totalPrice)??></#if>${request.totalPrice} р.</td>
+                <td><#if (request.clientName)??></#if>${request.clientName}</td>
+                <td><#if (request.clientPhone)??></#if>${request.clientPhone}</td>
             </#list>
             </tbody>
         </table>
