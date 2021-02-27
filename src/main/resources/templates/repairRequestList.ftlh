@@ -12,23 +12,25 @@
             <thead>
             <tr>
                 <th scope="col">Дата приема</th>
-                <th scope="col">Тип устройства</th>
-                <th scope="col">Модель</th>
+                <th scope="col">Устройство</th>
                 <th scope="col">Причина ремонта</th>
-                <th scope="col">Стоимость ремонта</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Стоимость</th>
                 <th scope="col">Клиент</th>
                 <th scope="col">Контактный номер</th>
             </tr>
             </thead>
             <tbody>
             <#list requests as request>
-                <td><a href="/request/${request.id}">${request.id}</a></td>
-                <td><#if (request.productType)??></#if>${request.productType}</td>
-                <td><#if (request.productName)??></#if>${request.productName}</td>
-                <td><#if (request.repairReason)??></#if>${request.repairReason}</td>
-                <td><#if (request.totalPrice)??></#if>${request.totalPrice} р.</td>
-                <td><#if (request.clientName)??></#if>${request.clientName}</td>
-                <td><#if (request.clientPhone)??></#if>${request.clientPhone}</td>
+                <tr>
+                    <td><a href="/request/${request.id}">${request.requestDate}</a></td>
+                    <td><#if (request.productName)??>${request.productName}</#if></td>
+                    <td><#if (request.repairReason)??>${request.repairReason}</#if></td>
+                    <td><#if (request.status)??>${request.status}</#if></td>
+                    <td><#if (request.totalPrice)??>${request.totalPrice} р.</#if></td>
+                    <td><#if (request.clientName)??>${request.clientName}</#if></td>
+                    <td><#if (request.clientPhone)??>${request.clientPhone}</#if></td>
+                </tr>
             </#list>
             </tbody>
         </table>

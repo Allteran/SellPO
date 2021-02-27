@@ -3,16 +3,17 @@ package ru.allteran.sellpo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.allteran.sellpo.domain.Dealer;
 import ru.allteran.sellpo.domain.PointOfSales;
 import ru.allteran.sellpo.domain.RepairRequest;
 import ru.allteran.sellpo.domain.User;
 import ru.allteran.sellpo.repo.POSRepository;
 import ru.allteran.sellpo.repo.RepairRequestRepository;
 
-import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class RepairService {
@@ -46,8 +47,11 @@ public class RepairService {
             }
         }
         request.setSellerId(user.getId());
-        //At first step the repair reason is request reason. Repair reason will be when repairman diagnose it
+
+        //All string fields that don't have data in moment of request creation should be filled with any data and updated in future
         request.setRepairReason(request.getRequestReason());
+        request.setSellDate("");
+        request.setRepairmanComment("");
 
         repairRepo.save(request);
     }
