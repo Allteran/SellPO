@@ -8,13 +8,16 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.allteran.sellpo.domain.PointOfSales;
+import ru.allteran.sellpo.domain.RepairDeviceStatus;
 import ru.allteran.sellpo.domain.RepairRequest;
 import ru.allteran.sellpo.domain.User;
 import ru.allteran.sellpo.repo.POSRepository;
+import ru.allteran.sellpo.repo.RepairDeviceStatusRepository;
 import ru.allteran.sellpo.service.ExcelService;
 import ru.allteran.sellpo.service.RepairService;
 import ru.allteran.sellpo.validator.RepairRequestValidator;
@@ -38,6 +41,8 @@ public class RepairController {
     private RepairRequestValidator requestValidator;
     @Autowired
     private POSRepository posRepo;
+    @Autowired
+    private RepairDeviceStatusRepository repairStatusRepo;
 
     private String certificatePath;
 
@@ -69,7 +74,6 @@ public class RepairController {
         User user = (User) auth.getPrincipal();
         repairService.createRepairRequest(repairRequest, user, form);
         redirectAttributes.addFlashAttribute("successMessage", SUCCESS_REQUEST_CREATED);
-        //TODO: check if it fill right data into Mongo: if fields exist at all (with empty value) or if its not
         return "redirect:/repairlist";
     }
 
@@ -112,5 +116,22 @@ public class RepairController {
                 e.printStackTrace();
             }
         }
+    }
+
+    @GetMapping("/request/{id}")
+    public String requestDetails(@PathVariable String id, Model model) {
+        RepairRequest request = repairService.findById(id);
+        PointOfSales pos = posRepo.findFirstById(request.getPosId());
+
+        model.addAttribute("statusList", repairStatusRepo.findAll());
+        model.addAttribute("pos", pos);
+        model.addAttribute("request", request);
+        return "repairRequestDetails";
+    }
+
+    @PostMapping("/repair")
+    public String editRequest() {
+//        TODO: FINISH THIS PAGE
+        return "repairRequestDetails";
     }
 }

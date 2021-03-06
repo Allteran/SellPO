@@ -26,7 +26,7 @@
                     <td><a href="/request/${request.id}">${request.requestDate}</a></td>
                     <td><#if (request.productName)??>${request.productName}</#if></td>
                     <td><#if (request.repairReason)??>${request.repairReason}</#if></td>
-                    <td><#if (request.status)??>${request.status}</#if></td>
+                    <td><#if (request.status)??>${request.status.status}</#if></td>
                     <td><#if (request.totalPrice)??>${request.totalPrice} р.</#if></td>
                     <td><#if (request.clientName)??>${request.clientName}</#if></td>
                     <td><#if (request.clientPhone)??>${request.clientPhone}</#if></td>

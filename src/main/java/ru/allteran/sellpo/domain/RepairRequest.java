@@ -6,28 +6,28 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class RepairRequest {
     @Id
-    private String id;
-    private String productName;
-    private String productType;
-    private String requestDate;
+    private String id; //*
+    private String productName; //*
+    private String productType; //*
+    private String requestDate; //*
     private String sellDate;
     private String repairmanComment;
 
-    private String status; //status - string const, that describes in app.properties
+    private RepairDeviceStatus status; //status - string const, that describes in app.properties
 
-    private long totalPrice;
-    private long componentPrice;
-    private long netProfit;
+    private int totalPrice;
+    private int componentPrice;
+    private int netProfit;
 
-    private String clientName;
-    private String clientPhone;
+    private String clientName; //*
+    private String clientPhone; //*
 
     private String posId;
     private String sellerId;
 
-    private String requestReason; //as client describes
-    private String repairReason; //actual reason from repairman
-    private String equipSet; //setting of equip that client gives to seller
+    private String requestReason; // *as client describes
+    private String repairReason; //*actual reason from repairman
+    private String equipSet; // *setting of equip that client gives to seller
     private String deviceState; // actual state of device if there any scratches or so on
 
     public RepairRequest() {
@@ -49,11 +49,11 @@ public class RepairRequest {
         this.repairmanComment = repairmanComment;
     }
 
-    public String getStatus() {
+    public RepairDeviceStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(RepairDeviceStatus status) {
         this.status = status;
     }
 
@@ -109,24 +109,20 @@ public class RepairRequest {
         return totalPrice;
     }
 
-    public void setTotalPrice(long totalPrice) {
+    public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
     }
 
-    public long getComponentPrice() {
+    public int getComponentPrice() {
         return componentPrice;
     }
 
-    public void setComponentPrice(long componentPrice) {
+    public void setComponentPrice(int componentPrice) {
         this.componentPrice = componentPrice;
     }
 
-    public long getNetProfit() {
-        return netProfit;
-    }
-
-    public void setNetProfit(long netProfit) {
-        this.netProfit = netProfit;
+    public int getNetProfit() {
+        return totalPrice-componentPrice;
     }
 
     public String getClientName() {

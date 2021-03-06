@@ -1,43 +1,36 @@
 package ru.allteran.sellpo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.allteran.sellpo.domain.PointOfSales;
+import ru.allteran.sellpo.domain.RepairDeviceStatus;
 import ru.allteran.sellpo.domain.RepairRequest;
 import ru.allteran.sellpo.domain.User;
 import ru.allteran.sellpo.repo.POSRepository;
+import ru.allteran.sellpo.repo.RepairDeviceStatusRepository;
 import ru.allteran.sellpo.repo.RepairRequestRepository;
 
+import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class RepairService {
-    @Value("${repair.status.new.request}")
-    private String STATUS_NEW_REQUEST;
-    @Value("${repair.status.repairing}")
-    private String STATUS_REPAIRING;
-    @Value("${repair.status.done}")
-    private String STATUS_DONE;
-    @Value("${repair.status.undone}")
-    private String STATUS_UNDONE;
-    @Value("${repair.status.paid}")
-    private String STATUS_PAID;
-
     @Autowired
     private RepairRequestRepository repairRepo;
     @Autowired
     private POSRepository posRepo;
+    @Autowired
+    private RepairDeviceStatusRepository statusRepo;
 
     public void createRepairRequest(RepairRequest request, User user, Map<String, String> form) {
         request.setId(UUID.randomUUID().toString());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyy");
         request.setRequestDate(dateFormatter.format(new Date()));
-        request.setStatus(STATUS_NEW_REQUEST);
+
+        RepairDeviceStatus newRequestStatus = statusRepo.findFirstById(RepairDeviceStatus.ID_NEW_REQUEST);
+
+        request.setStatus(newRequestStatus);
 
         for (String posId : form.values()) {
             PointOfSales pos = posRepo.findFirstById(posId);
@@ -60,6 +53,10 @@ public class RepairService {
         return repairRepo.findAll();
     }
 
+    public RepairRequest findById(String id) {
+        return repairRepo.findFirstById(id);
+    }
+
 // Uncomment next lines if you want to fill MongoDB with data of POSs
 //    private static List<PointOfSales> posList = new ArrayList<>();
 //
@@ -73,5 +70,22 @@ public class RepairService {
 //    public void init() {
 //        posRepo.deleteAll();
 //        posRepo.saveAll(posList);
+//    }
+//
+//    private static List<RepairDeviceStatus> statusList = new ArrayList<>();
+//
+//    static {
+//        statusList.add(new RepairDeviceStatus(RepairDeviceStatus.ID_NEW_REQUEST, RepairDeviceStatus.NEW_REQUEST));
+//        statusList.add(new RepairDeviceStatus(RepairDeviceStatus.ID_REPAIRING, RepairDeviceStatus.REPAIRING));
+//        statusList.add(new RepairDeviceStatus(RepairDeviceStatus.ID_DONE, RepairDeviceStatus.DONE));
+//        statusList.add(new RepairDeviceStatus(RepairDeviceStatus.ID_UNDONE, RepairDeviceStatus.UNDONE));
+//        statusList.add(new RepairDeviceStatus(RepairDeviceStatus.ID_PAID, RepairDeviceStatus.PAID));
+//    }
+//
+//    @PostConstruct
+//    public void init() {
+//        repairRepo.deleteAll();
+//        statusRepo.deleteAll();
+//        statusRepo.saveAll(statusList);
 //    }
 }

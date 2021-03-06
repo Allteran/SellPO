@@ -51,3 +51,6 @@ div {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+.mt-10 {
+    margin-top: 10px;
+}
