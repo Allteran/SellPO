@@ -23,7 +23,7 @@
             <tbody>
             <#list requests as request>
                 <tr>
-                    <td><a href="/request/${request.id}">${request.requestDate}</a></td>
+                    <td><a href="/request/${request.id}">${request.requestDate.stringDate}</a></td>
                     <td><#if (request.productName)??>${request.productName}</#if></td>
                     <td><#if (request.repairReason)??>${request.repairReason}</#if></td>
                     <td><#if (request.status)??>${request.status.status}</#if></td>

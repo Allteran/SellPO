@@ -2,17 +2,16 @@ package ru.allteran.sellpo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.allteran.sellpo.domain.PointOfSales;
-import ru.allteran.sellpo.domain.RepairDeviceStatus;
-import ru.allteran.sellpo.domain.RepairRequest;
-import ru.allteran.sellpo.domain.User;
+import ru.allteran.sellpo.domain.*;
 import ru.allteran.sellpo.repo.POSRepository;
 import ru.allteran.sellpo.repo.RepairDeviceStatusRepository;
 import ru.allteran.sellpo.repo.RepairRequestRepository;
 
 import javax.annotation.PostConstruct;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class RepairService {
@@ -25,8 +24,7 @@ public class RepairService {
 
     public void createRepairRequest(RepairRequest request, User user, Map<String, String> form) {
         request.setId(UUID.randomUUID().toString());
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyy");
-        request.setRequestDate(dateFormatter.format(new Date()));
+        request.setRequestDate(new RepairDate(new Date()));
 
         RepairDeviceStatus newRequestStatus = statusRepo.findFirstById(RepairDeviceStatus.ID_NEW_REQUEST);
 
@@ -43,7 +41,7 @@ public class RepairService {
 
         //All string fields that don't have data in moment of request creation should be filled with any data and updated in future
         request.setRepairReason(request.getRequestReason());
-        request.setSellDate("");
+        request.setSellDate(new RepairDate(new Date(0))); //set a default date
         request.setRepairmanComment("");
 
         repairRepo.save(request);
@@ -57,7 +55,7 @@ public class RepairService {
         return repairRepo.findFirstById(id);
     }
 
-// Uncomment next lines if you want to fill MongoDB with data of POSs
+    // Uncomment next lines if you want to fill MongoDB with data of POSs
 //    private static List<PointOfSales> posList = new ArrayList<>();
 //
 //    static {
@@ -82,10 +80,10 @@ public class RepairService {
 //        statusList.add(new RepairDeviceStatus(RepairDeviceStatus.ID_PAID, RepairDeviceStatus.PAID));
 //    }
 //
-//    @PostConstruct
-//    public void init() {
-//        repairRepo.deleteAll();
+    @PostConstruct
+    public void init() {
+        repairRepo.deleteAll();
 //        statusRepo.deleteAll();
 //        statusRepo.saveAll(statusList);
-//    }
+    }
 }

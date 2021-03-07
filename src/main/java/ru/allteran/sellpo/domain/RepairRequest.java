@@ -3,17 +3,19 @@ package ru.allteran.sellpo.domain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 @Document
 public class RepairRequest {
     @Id
     private String id; //*
     private String productName; //*
     private String productType; //*
-    private String requestDate; //*
-    private String sellDate;
+    private RepairDate requestDate; //*
+    private RepairDate sellDate;
     private String repairmanComment;
 
-    private RepairDeviceStatus status; //status - string const, that describes in app.properties
+    private RepairDeviceStatus status;
 
     private int totalPrice;
     private int componentPrice;
@@ -89,19 +91,19 @@ public class RepairRequest {
         this.productType = productType;
     }
 
-    public String getRequestDate() {
+    public RepairDate getRequestDate() {
         return requestDate;
     }
 
-    public void setRequestDate(String requestDate) {
+    public void setRequestDate(RepairDate requestDate) {
         this.requestDate = requestDate;
     }
 
-    public String getSellDate() {
+    public RepairDate getSellDate() {
         return sellDate;
     }
 
-    public void setSellDate(String sellDate) {
+    public void setSellDate(RepairDate sellDate) {
         this.sellDate = sellDate;
     }
 
