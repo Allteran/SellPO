@@ -1,4 +1,4 @@
-package ru.allteran.sellpo.domain;
+package ru.allteran.sellpo.models;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

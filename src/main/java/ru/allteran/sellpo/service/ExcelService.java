@@ -1,14 +1,13 @@
 package ru.allteran.sellpo.service;
 
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.allteran.sellpo.domain.PointOfSales;
-import ru.allteran.sellpo.domain.RepairRequest;
-import ru.allteran.sellpo.domain.User;
+import ru.allteran.sellpo.models.PointOfSales;
+import ru.allteran.sellpo.models.RepairRequest;
+import ru.allteran.sellpo.models.User;
 import ru.allteran.sellpo.repo.POSRepository;
 
 import javax.validation.constraints.NotNull;

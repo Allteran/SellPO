@@ -1,4 +1,4 @@
-package ru.allteran.sellpo.config;
+package ru.allteran.sellpo.configs;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/edit/**", "/userlist", "/edit").hasAnyAuthority("ADMIN")
+//                    .antMatchers("/edit/**", "/users", "/edit").hasAnyAuthority("ADMIN")
                     .antMatchers("/registration").permitAll()
                     .anyRequest().authenticated()
                 .and()

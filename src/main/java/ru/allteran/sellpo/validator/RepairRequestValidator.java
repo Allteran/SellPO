@@ -6,7 +6,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-import ru.allteran.sellpo.domain.RepairRequest;
+import ru.allteran.sellpo.models.RepairRequest;
 
 
 @Component

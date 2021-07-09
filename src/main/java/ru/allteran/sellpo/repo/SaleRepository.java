@@ -2,8 +2,8 @@ package ru.allteran.sellpo.repo;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-import ru.allteran.sellpo.domain.ProductType;
-import ru.allteran.sellpo.domain.Sale;
+import ru.allteran.sellpo.models.ProductType;
+import ru.allteran.sellpo.models.Sale;
 
 import java.util.List;
 @Repository

@@ -1,4 +1,4 @@
-package ru.allteran.sellpo.domain;
+package ru.allteran.sellpo.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;

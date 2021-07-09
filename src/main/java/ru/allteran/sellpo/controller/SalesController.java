@@ -6,26 +6,26 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.allteran.sellpo.domain.Sale;
+import ru.allteran.sellpo.models.Sale;
 import ru.allteran.sellpo.service.SaleService;
 
 import java.util.List;
 import java.util.Map;
 
 @Controller
-public class PersonalSalesController {
+public class SalesController {
     @Autowired
     private SaleService saleService;
 
-    @GetMapping("/personalSales")
+    @GetMapping("/sales/personal")
     public String personalSales(Model model) {
         List<Sale> personalSales = saleService.findAll();
 
         model.addAttribute("sales", personalSales);
-        return "personalSales";
+        return "personal-sales";
     }
 
-    @PostMapping("/personalSales")
+    @PostMapping("/sales/personal")
     public String saveSale(
             @RequestParam Map<String, String> form,
             @RequestParam("productName") String productName,
@@ -34,7 +34,7 @@ public class PersonalSalesController {
         saleService.saveSale(form, productName, productPrice, 44444, 966739);
         List<Sale> personalSales = saleService.findAll();
         model.addAttribute("sales", personalSales);
-        return "personalSales";
+        return "personal-sales";
     }
 
 }

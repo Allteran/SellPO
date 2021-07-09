@@ -1,7 +1,7 @@
 package ru.allteran.sellpo.testutils;
 
-import ru.allteran.sellpo.domain.User;
-import ru.allteran.sellpo.domain.EmployeeKPI;
+import ru.allteran.sellpo.models.User;
+import ru.allteran.sellpo.models.EmployeeKPI;
 
 public class EmployeeKPITest {
     private User user;

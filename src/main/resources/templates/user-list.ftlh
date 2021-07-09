@@ -24,7 +24,7 @@
             <tbody>
             <#list users as user>
                 <tr>
-                    <td><a href="/edit/${user.phone}">${user.phone}</a></td>
+                    <td><a href="/user/edit/${user.phone}">${user.phone}</a></td>
                     <td>${user.firstName} ${user.lastName}</td>
                     <td><#if user.roles??><#list user.roles as role>${role.name}<#sep>, </#list></#if> </td>
                     <td><#if user.dealer??>${user.dealer.name}</#if></td>

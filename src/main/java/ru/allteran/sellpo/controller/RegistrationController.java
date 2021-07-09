@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ru.allteran.sellpo.domain.User;
+import ru.allteran.sellpo.models.User;
 import ru.allteran.sellpo.repo.DealerRepository;
 import ru.allteran.sellpo.service.UserService;
 import ru.allteran.sellpo.validator.UserRegistrationValidator;

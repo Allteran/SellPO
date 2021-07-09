@@ -1,4 +1,4 @@
-package ru.allteran.sellpo.domain;
+package ru.allteran.sellpo.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,7 +12,7 @@ public class Sale {
     private int posId;
     private double employeeId;
     private Product product;
-    private PayType payType;
+    private String payType;
 
     public Sale() {
     }
@@ -57,11 +57,11 @@ public class Sale {
         this.product = product;
     }
 
-    public PayType getPayType() {
+    public String getPayType() {
         return payType;
     }
 
-    public void setPayType(PayType payType) {
+    public void setPayType(String payType) {
         this.payType = payType;
     }
 }

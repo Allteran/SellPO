@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-import ru.allteran.sellpo.domain.User;
+import ru.allteran.sellpo.models.User;
 import ru.allteran.sellpo.service.UserService;
 
 @Component

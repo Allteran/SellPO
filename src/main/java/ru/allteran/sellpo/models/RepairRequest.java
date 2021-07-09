@@ -1,9 +1,7 @@
-package ru.allteran.sellpo.domain;
+package ru.allteran.sellpo.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.Date;
 
 @Document
 public class RepairRequest {
@@ -12,7 +10,7 @@ public class RepairRequest {
     private String productName; //*
     private String productType; //*
     private RepairDate requestDate; //*
-    private RepairDate sellDate;
+    private RepairDate sellDate;//
     private String repairmanComment;
 
     private RepairDeviceStatus status;
@@ -124,7 +122,7 @@ public class RepairRequest {
     }
 
     public int getNetProfit() {
-        return totalPrice-componentPrice;
+        return totalPrice - componentPrice;
     }
 
     public String getClientName() {

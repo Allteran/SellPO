@@ -1,6 +1,5 @@
-package ru.allteran.sellpo.domain;
+package ru.allteran.sellpo.models;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 

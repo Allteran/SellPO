@@ -1,6 +1,4 @@
-package ru.allteran.sellpo.domain;
-
-import java.util.List;
+package ru.allteran.sellpo.models;
 
 public class EmployeeKPI {
     private int giPlan;

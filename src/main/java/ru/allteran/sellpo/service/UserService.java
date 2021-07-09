@@ -12,13 +12,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import ru.allteran.sellpo.domain.Dealer;
-import ru.allteran.sellpo.domain.Role;
-import ru.allteran.sellpo.domain.User;
+import ru.allteran.sellpo.models.Dealer;
+import ru.allteran.sellpo.models.Role;
+import ru.allteran.sellpo.models.User;
 import ru.allteran.sellpo.repo.DealerRepository;
 import ru.allteran.sellpo.repo.RoleRepository;
 import ru.allteran.sellpo.repo.UserRepository;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Service
@@ -218,11 +219,19 @@ public class UserService implements UserDetailsService {
 //        roles.add(new Role(Role.ID_ADMIN, "ADMIN"));
 //        roles.add(new Role(Role.ID_MANAGER, "MANAGER"));
 //    }
+
+//    private static Set<Dealer> dealer = new HashSet<>();
+//    static {
+//        dealer.add(new Dealer("nord", "ООО 'НОРД'"));
+//        dealer.add(new Dealer("manuk", "ИП Манукян М.А."));
+//        dealer.add(new Dealer("svyaz", "ООО 'Связь'"));
+//    }
 //
 //    @PostConstruct
 //    public void init() {
 //        roleRepo.deleteAll();
 //        roleRepo.saveAll(roles);
+//        dealerRepo.saveAll(dealer);
 //    }
 
 }

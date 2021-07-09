@@ -2,12 +2,11 @@ package ru.allteran.sellpo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.allteran.sellpo.domain.*;
+import ru.allteran.sellpo.models.*;
 import ru.allteran.sellpo.repo.POSRepository;
 import ru.allteran.sellpo.repo.RepairDeviceStatusRepository;
 import ru.allteran.sellpo.repo.RepairRequestRepository;
 
-import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -80,10 +79,10 @@ public class RepairService {
 //        statusList.add(new RepairDeviceStatus(RepairDeviceStatus.ID_PAID, RepairDeviceStatus.PAID));
 //    }
 //
-    @PostConstruct
-    public void init() {
-        repairRepo.deleteAll();
+//    @PostConstruct
+//    public void init() {
+//        repairRepo.deleteAll();
 //        statusRepo.deleteAll();
 //        statusRepo.saveAll(statusList);
-    }
+//    }
 }

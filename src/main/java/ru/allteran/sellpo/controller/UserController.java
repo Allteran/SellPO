@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ru.allteran.sellpo.domain.Dealer;
-import ru.allteran.sellpo.domain.Role;
-import ru.allteran.sellpo.domain.User;
+import ru.allteran.sellpo.models.Dealer;
+import ru.allteran.sellpo.models.Role;
+import ru.allteran.sellpo.models.User;
 import ru.allteran.sellpo.repo.DealerRepository;
 import ru.allteran.sellpo.repo.RoleRepository;
 import ru.allteran.sellpo.validator.UserEditValidator;
@@ -43,15 +43,15 @@ public class UserController {
     @Autowired
     private UserProfileValidator profileValidator;
 
-    @GetMapping("/userlist")
+    @GetMapping("/users")
     public String userList(Model model) {
         List<User> users = userService.findAll();
         model.addAttribute("users", users);
 
-        return "userList";
+        return "user-list";
     }
 
-    @GetMapping("/edit/{phone}")
+    @GetMapping("/user/edit/{phone}")
     public String userEditForm(@PathVariable String phone, Model model) {
         Set<Role> roles = new HashSet<>(rolesRepo.findAll());
         List<Dealer> dealers = dealerRepo.findAll();
@@ -60,10 +60,10 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("dealers", dealers);
         model.addAttribute("userPhone", user.getPhone());
-        return "userEdit";
+        return "user-edit";
     }
 
-    @PostMapping(value = "/edit", params = {"save"})
+    @PostMapping(value = "/user/edit", params = {"save"})
     public String userSave(
             @Valid User userForm, @RequestParam("userPhone") String incUserPhone,
             @RequestParam Map<String, String> form, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
@@ -77,7 +77,7 @@ public class UserController {
                 model.addAttribute("userPhone", incUser.getPhone());
             }
             model.mergeAttributes(errors);
-            return "userEdit";
+            return "user-edit";
         }
         if (incUser == null) {
             redirectAttributes.addFlashAttribute("errorMessage", ERROR_USER_MESSAGE);
@@ -85,24 +85,24 @@ public class UserController {
             userService.saveUser(userForm, incUser, form);
             redirectAttributes.addFlashAttribute("successMessage", SUCCESS_SAVING_USER_MESSAGE);
         }
-        return "redirect:/userlist";
+        return "redirect:/users";
     }
 
-    @PostMapping(value = "/edit", params = {"delete"})
+    @PostMapping(value = "/user/edit", params = {"delete"})
     public String userDelete(@RequestParam("userPhone") String userPhone, RedirectAttributes redirectAttributes) {
         User user = userService.findByPhone(userPhone);
         if (user == null) {
             redirectAttributes.addFlashAttribute("errorMessage", ERROR_USER_MESSAGE);
-            return "redirect:/userlist";
+            return "redirect:/users";
         } else {
             redirectAttributes.addFlashAttribute("successMessage", SUCCESS_DELETE_USER_MESSAGE);
             userService.deleteUser(user.getPhone());
         }
         System.out.println("user deleted");
-        return "redirect:/userlist";
+        return "redirect:/users";
     }
 
-    @GetMapping("/profile")
+    @GetMapping("/user/profile")
     public String userProfileForm(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) auth.getPrincipal();

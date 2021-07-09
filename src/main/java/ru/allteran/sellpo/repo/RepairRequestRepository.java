@@ -2,8 +2,8 @@ package ru.allteran.sellpo.repo;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-import ru.allteran.sellpo.domain.RepairDeviceStatus;
-import ru.allteran.sellpo.domain.RepairRequest;
+import ru.allteran.sellpo.models.RepairDeviceStatus;
+import ru.allteran.sellpo.models.RepairRequest;
 
 import java.util.List;
 

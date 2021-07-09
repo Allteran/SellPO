@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ru.allteran.sellpo.domain.PointOfSales;
-import ru.allteran.sellpo.domain.RepairDeviceStatus;
-import ru.allteran.sellpo.domain.RepairRequest;
-import ru.allteran.sellpo.domain.User;
+import ru.allteran.sellpo.models.PointOfSales;
+import ru.allteran.sellpo.models.RepairRequest;
+import ru.allteran.sellpo.models.User;
 import ru.allteran.sellpo.repo.POSRepository;
 import ru.allteran.sellpo.repo.RepairDeviceStatusRepository;
 import ru.allteran.sellpo.service.ExcelService;
@@ -46,20 +45,20 @@ public class RepairController {
 
     private String certificatePath;
 
-    @GetMapping("/createRepairRequest")
+    @GetMapping("/repair/request/create")
     public String repairRequestForm(Model model) {
         model.addAttribute("posList", posRepo.findAll());
-        return "createRepairRequest";
+        return "repair-request-create";
     }
 
-    @GetMapping("/repairlist")
+    @GetMapping("/repair/request")
     public String repairRequestList(Model model) {
         List<RepairRequest> requestList = repairService.findAll();
         model.addAttribute("requests", requestList);
-        return "repairRequestList";
+        return "repair-request-list";
     }
 
-    @PostMapping(value = "/createRepairRequest", params = {"createRequest"})
+    @PostMapping(value = "/repair/request/create", params = {"createRequest"})
     public String createRepairRequest(
             @Valid RepairRequest repairRequest, @RequestParam Map<String, String> form,
             BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
@@ -68,16 +67,16 @@ public class RepairController {
             Map<String, String> errors = ControllerUtils.getFieldErrors(bindingResult);
             model.mergeAttributes(errors);
             model.addAttribute("requestDraft", repairRequest);
-            return "createRepairRequest";
+            return "repair-request-create";
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) auth.getPrincipal();
         repairService.createRepairRequest(repairRequest, user, form);
         redirectAttributes.addFlashAttribute("successMessage", SUCCESS_REQUEST_CREATED);
-        return "redirect:/repairlist";
+        return "redirect:/repair/request";
     }
 
-    @PostMapping(value = "/createRepairRequest", params = {"generateCertificate"})
+    @PostMapping(value = "/repair/request/create", params = {"generateCertificate"})
     public String generateCertificate(
             @Valid RepairRequest repairRequest, @RequestParam Map<String, String> form,
             BindingResult bindingResult, Model model) {
@@ -86,7 +85,7 @@ public class RepairController {
             Map<String, String> errors = ControllerUtils.getFieldErrors(bindingResult);
             model.mergeAttributes(errors);
             model.addAttribute("requestDraft", repairRequest);
-            return "createRepairRequest";
+            return "repair-request-create";
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) auth.getPrincipal();
@@ -118,7 +117,7 @@ public class RepairController {
         }
     }
 
-    @GetMapping("/request/{id}")
+    @GetMapping("/repair/request/{id}")
     public String requestDetails(@PathVariable String id, Model model) {
         RepairRequest request = repairService.findById(id);
         PointOfSales pos = posRepo.findFirstById(request.getPosId());

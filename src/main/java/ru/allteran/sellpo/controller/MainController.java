@@ -3,8 +3,8 @@ package ru.allteran.sellpo.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ru.allteran.sellpo.domain.User;
-import ru.allteran.sellpo.domain.EmployeeKPI;
+import ru.allteran.sellpo.models.User;
+import ru.allteran.sellpo.models.EmployeeKPI;
 
 @Controller
 public class MainController {

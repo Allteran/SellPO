@@ -2,23 +2,14 @@ package ru.allteran.sellpo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.allteran.sellpo.domain.PayType;
-import ru.allteran.sellpo.domain.Product;
-import ru.allteran.sellpo.domain.ProductType;
-import ru.allteran.sellpo.repo.PayTypeRepository;
+import ru.allteran.sellpo.models.Product;
+import ru.allteran.sellpo.models.ProductType;
 import ru.allteran.sellpo.repo.ProductTypeRepository;
-
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class ProductService {
     @Autowired
     private ProductTypeRepository productTypeRepository;
-
-    @Autowired
-    private PayTypeRepository payTypeRepository;
 
     /**
      * Uncomment next lines only if you are running this code first time on machine
@@ -44,19 +35,9 @@ public class ProductService {
 //        typeList.add(new ProductType(Const.TYPE_WINK_ID, Const.TYPE_WINK_NAME));
 //    }
 //
-//    private static List<PayType> payTypeList = new ArrayList<>();
-//
-//    static {
-//        payTypeList.add(new PayType(Const.PAYTYPE_CREDIT_ID, Const.PAYTYPE_CREDIT_NAME));
-//        payTypeList.add(new PayType(Const.PAYTYPE_CASH_ID, Const.PAYTYPE_CASH_NAME));
-//        payTypeList.add(new PayType(Const.PAYTYPE_CARD_ID, Const.PAYTYPE_CARD_NAME));
-//    }
-//
-//
 //    @PostConstruct
 //    public void init() {
 //        productTypeRepository.saveAll(typeList);
-//        payTypeRepository.saveAll(payTypeList);
 //    }
 
     public double productMaxReward(Product product) {

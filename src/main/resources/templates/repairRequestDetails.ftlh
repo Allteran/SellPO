@@ -6,7 +6,7 @@
             <div class="col-md-2">
                 <label for="inputRequestDate">Дата заявки</label>
                 <input type="text" readonly class="form-control-plaintext" id="inputRequestDate" name="requestDate"
-                       value="${request.requestDate}">
+                       value="${request.requestDate.stringDate}">
             </div>
             <div class="col-md-4">
                 <label for="inputType">Тип устройства</label>
@@ -56,6 +56,16 @@
                             value="${status.id}">${status.status}</option>
                 </#list>
             </select>
+        </div>
+        <div class="form-row" style="margin-top: 10px">
+            <div class="text-right">
+                <button class="btn btn-outline-secondary form-control" name="saveChanges" type="submit">
+                    Сохранить изменения
+                </button>
+                <button class="btn btn-outline-secondary form-control" name="discardChanges" type="submit">
+                    Отменить
+                </button>
+            </div>
         </div>
         <#--TODO: FINISH THIS PAGE-->
     </form>
